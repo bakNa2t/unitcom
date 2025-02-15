@@ -39,7 +39,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <TooltipProvider>{children}</TooltipProvider>
+          <TooltipProvider>
+            <main>{children}</main>
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>

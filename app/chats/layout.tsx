@@ -1,12 +1,12 @@
-import { ReactNode } from "react";
+import { FC, ReactNode } from "react";
 
 import { ChatsBlock } from "../_components/ChatsBlock";
 
-interface ChatLayoutProps {
+type ChatLayoutProps = {
   children: ReactNode;
-}
+};
 
-const ChatLayout = ({ children }: { children: ChatLayoutProps }) => {
+const ChatLayout: FC<ChatLayoutProps> = ({ children }) => {
   return (
     <>
       <div className="hidden md:flex md:ml-24 px-2 md:px-0 h-dvh">

@@ -1,11 +1,12 @@
 "use client";
 
-import { ReactNode } from "react";
+import { FC, ReactNode } from "react";
+import { SharedBlock } from "./SharedBlock";
 
-interface ChatsBlockProps {
+type ChatsBlockProps = {
   children: ReactNode;
-}
+};
 
-export const ChatsBlock = ({ children }: { children: ChatsBlockProps }) => {
-  return <>{children}</>;
+export const ChatsBlock: FC<ChatsBlockProps> = ({ children }) => {
+  return <SharedBlock SidebarComponent={() => <></>}>{children}</SharedBlock>;
 };

@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 import { MessageCircle, Phone } from "lucide-react";
 import Link from "next/link";
 
+import ProfileDialogContent from "./ProfileDialogContent";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -15,9 +17,9 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { cn, isRouteActivePath } from "@/lib/utils";
-import { Dialog } from "@/components/ui/dialog";
 
 type NavigationBarProps = {
   trigger: ReactNode;
@@ -81,7 +83,18 @@ export const NavigationBar: FC<NavigationBarProps> = () => {
           <NavigationMenuList>
             <NavigationMenuItem>
               <Dialog>
-                <NavigationMenu orientation="vertical"></NavigationMenu>
+                <NavigationMenu orientation="vertical">
+                  <DialogTrigger>
+                    <Avatar>
+                      <AvatarImage src="https://github.com/shadcn.png" />
+                      <AvatarFallback>User</AvatarFallback>
+                    </Avatar>
+                  </DialogTrigger>
+
+                  <DialogContent>
+                    <ProfileDialogContent />
+                  </DialogContent>
+                </NavigationMenu>
               </Dialog>
             </NavigationMenuItem>
           </NavigationMenuList>

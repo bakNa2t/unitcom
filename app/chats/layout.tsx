@@ -1,6 +1,6 @@
 import { FC, ReactNode } from "react";
 
-import { ChatsBlock } from "../_components/ChatsBlock";
+import { ChatsBlock } from "./_components/ChatsBlock";
 
 type ChatLayoutProps = {
   children: ReactNode;

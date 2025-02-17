@@ -8,6 +8,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { useSidebarWidth } from "@/hooks/useSidebarWidth";
 
 type SharedBlockProps = {
   children: ReactNode;
@@ -22,6 +23,7 @@ export const SharedBlock: FC<SharedBlockProps> = ({
 }) => {
   const pathName = usePathname();
   const [isRendered, setIsRendered] = useState(false);
+  const { sidebarWidth, setSidebarWidth } = useSidebarWidth();
 
   useEffect(() => {
     setIsRendered(true);
@@ -32,14 +34,24 @@ export const SharedBlock: FC<SharedBlockProps> = ({
   return (
     <>
       <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel defaultSize={30} maxSize={40}>
+        <ResizablePanel
+          onResize={(width) => setSidebarWidth(width)}
+          defaultSize={sidebarWidth}
+          maxSize={40}
+          minSize={20}
+        >
           <SidebarComponent {...SidebarProps} />
         </ResizablePanel>
 
         <ResizableHandle
-          withHandle={pathName === "/chats"}
+          withHandle
           className="border-r border-r-gray-400 dark:border-r-gray-800"
         />
+
+        <ResizablePanel className="!overflow-y-auto my-20 bg-slate-200">
+          <div className="hidden md:block"></div>
+          {children}
+        </ResizablePanel>
       </ResizablePanelGroup>
 
       <div className="md:hidden">{children}</div>

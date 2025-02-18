@@ -1,10 +1,14 @@
 import { useTheme } from "next-themes";
-import { UserRound } from "lucide-react";
+import { UserRound, UserRoundSearch } from "lucide-react";
+import { useForm } from "react-hook-form";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Card, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 const statuses = [
   "😎 Speak Freely",
@@ -14,8 +18,19 @@ const statuses = [
   "⌛ Taking a break",
 ];
 
+const requestFreiendFormSchema = z.object({
+  email: z.string().min(1, { message: "Email is required" }).email(),
+});
+
 const ProfileDialogContent = () => {
   const { setTheme } = useTheme();
+
+  const form = useForm<z.infer<typeof requestFreiendFormSchema>>({
+    resolver: zodResolver(requestFreiendFormSchema),
+    defaultValues: {
+      email: "",
+    },
+  });
 
   return (
     <div>
@@ -47,6 +62,19 @@ const ProfileDialogContent = () => {
           <p>Manage your profile</p>
           <button>User Button</button>
         </div>
+
+        <Separator />
+
+        <Dialog>
+          <DialogTrigger>
+            <div className="flex items-center space-x-2">
+              <UserRoundSearch />
+              <p>Send friend request</p>
+            </div>
+          </DialogTrigger>
+
+          <DialogContent></DialogContent>
+        </Dialog>
       </div>
     </div>
   );

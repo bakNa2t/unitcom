@@ -1,5 +1,5 @@
 import { useTheme } from "next-themes";
-import { UserRound, UserRoundSearch } from "lucide-react";
+import { Handshake, UserRound, UserRoundSearch } from "lucide-react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -119,6 +119,23 @@ const ProfileDialogContent = () => {
                 </Button>
               </form>
             </Form>
+          </DialogContent>
+        </Dialog>
+
+        <Separator />
+
+        <Dialog>
+          <DialogTrigger>
+            <div className="flex items-center space-x-2">
+              <Handshake />
+              <p>View friend requests</p>
+            </div>
+          </DialogTrigger>
+
+          <DialogContent>
+            <p className="text-xl text-center font-bold">
+              No friend requests yet
+            </p>
           </DialogContent>
         </Dialog>
       </div>

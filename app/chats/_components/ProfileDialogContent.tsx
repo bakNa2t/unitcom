@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { useTheme } from "next-themes";
-import { Handshake, UserRound, UserRoundSearch } from "lucide-react";
+import { Handshake, Pencil, UserRound, UserRoundSearch } from "lucide-react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,6 +20,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 const statuses = [
   "😎 Speak Freely",
@@ -33,6 +35,8 @@ const requestFriendFormSchema = z.object({
 });
 
 const ProfileDialogContent = () => {
+  const [updateStatusDialog, setUpdateStatusDialog] = useState(false);
+  const [status, setStatus] = useState("");
   const { setTheme } = useTheme();
 
   const form = useForm<z.infer<typeof requestFriendFormSchema>>({
@@ -136,6 +140,45 @@ const ProfileDialogContent = () => {
             <p className="text-xl text-center font-bold">
               No friend requests yet
             </p>
+          </DialogContent>
+        </Dialog>
+
+        <Separator />
+
+        <Dialog open={updateStatusDialog} onOpenChange={setUpdateStatusDialog}>
+          <DialogTrigger>
+            <div className="flex items-center space-x-2">
+              <Pencil />
+              <p>{"Display current status"}</p>
+            </div>
+          </DialogTrigger>
+          <DialogContent>
+            <Textarea
+              value={status}
+              placeholder="Dispaly current status"
+              className="resize-none h-48"
+              onChange={(e) => setStatus(e.target.value)}
+            />
+
+            <div>
+              {statuses.map((status) => (
+                <p
+                  key={status}
+                  onClick={() => setStatus(status)}
+                  className="px-2 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md cursor-pointer"
+                >
+                  {status}
+                </p>
+              ))}
+            </div>
+
+            <Button
+              type="button"
+              className="ml-auto w-fit bg-primary-main"
+              disabled
+            >
+              Update Status
+            </Button>
           </DialogContent>
         </Dialog>
       </div>

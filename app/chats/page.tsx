@@ -1,5 +1,11 @@
+import { NavigationBar } from "./_components/NavigationBar";
+
 const ChatPage = () => {
-  return <div>Unitcom ChatPage</div>;
+  return (
+    <>
+      <NavigationBar trigger={<></>} />
+    </>
+  );
 };
 
 export default ChatPage;

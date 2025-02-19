@@ -1,6 +1,14 @@
 import { useState } from "react";
 import { useTheme } from "next-themes";
-import { Handshake, Pencil, UserRound, UserRoundSearch } from "lucide-react";
+import {
+  Handshake,
+  LaptopMinimal,
+  Pencil,
+  Sun,
+  SunMoon,
+  UserRound,
+  UserRoundSearch,
+} from "lucide-react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,6 +29,7 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 const statuses = [
   "😎 Speak Freely",
@@ -181,6 +190,35 @@ const ProfileDialogContent = () => {
             </Button>
           </DialogContent>
         </Dialog>
+
+        <Separator />
+
+        <ToggleGroup type="single" variant="outline">
+          <ToggleGroupItem
+            value="light"
+            onClick={() => setTheme("light")}
+            className="flex space-x-3"
+          >
+            <Sun className="h-4 w-4" />
+            <p>Light</p>
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="dark"
+            onClick={() => setTheme("dark")}
+            className="flex space-x-3"
+          >
+            <SunMoon className="h-4 w-4" />
+            <p>Dark</p>
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="system"
+            onClick={() => setTheme("system")}
+            className="flex space-x-3"
+          >
+            <LaptopMinimal className="h-4 w-4" />
+            <p>System</p>
+          </ToggleGroupItem>
+        </ToggleGroup>
       </div>
     </div>
   );

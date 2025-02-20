@@ -1,5 +1,5 @@
 import { ConvexError, v } from "convex/values";
-import { query } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 
 export const get = query({
   args: {
@@ -16,5 +16,26 @@ export const get = query({
     }
 
     return user;
+  },
+});
+
+export const update = mutation({
+  args: {
+    clerkId: v.string(),
+    status: v.optional(v.string()),
+  },
+  handler: async (ctx, { clerkId, status }) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_clerkId", (q) => q.eq("clerkId", clerkId))
+      .unique();
+
+    if (!user) {
+      throw new ConvexError("User not found");
+    }
+
+    await ctx.db.patch(user._id, { status });
+
+    return { success: true };
   },
 });

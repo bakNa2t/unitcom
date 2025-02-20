@@ -14,7 +14,7 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as http from "../http.js";
-import type * as staus from "../staus.js";
+import type * as status from "../status.js";
 import type * as user from "../user.js";
 
 /**
@@ -27,7 +27,7 @@ import type * as user from "../user.js";
  */
 declare const fullApi: ApiFromModules<{
   http: typeof http;
-  staus: typeof staus;
+  status: typeof status;
   user: typeof user;
 }>;
 export declare const api: FilterApi<

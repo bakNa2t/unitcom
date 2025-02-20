@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useTheme } from "next-themes";
+import { useQuery } from "convex/react";
+import { useUser } from "@clerk/clerk-react";
 import {
   Handshake,
   LaptopMinimal,
@@ -31,6 +33,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
+import { api } from "@/convex/_generated/api";
+
 const statuses = [
   "😎 Speak Freely",
   "🔐 Encrypted",
@@ -47,6 +51,9 @@ const ProfileDialogContent = () => {
   const [updateStatusDialog, setUpdateStatusDialog] = useState(false);
   const [status, setStatus] = useState("");
   const { setTheme } = useTheme();
+
+  const { user } = useUser();
+  const userDetails = useQuery(api.status.get, { clerkId: user?.id ?? "" });
 
   const form = useForm<z.infer<typeof requestFriendFormSchema>>({
     resolver: zodResolver(requestFriendFormSchema),
@@ -66,8 +73,8 @@ const ProfileDialogContent = () => {
 
         <div>
           <Avatar className="w-16 h-16 mx-auto">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>User</AvatarFallback>
+            <AvatarImage src={userDetails?.imageUrl} />
+            <AvatarFallback>{userDetails?.username[0]}</AvatarFallback>
           </Avatar>
         </div>
       </Card>
@@ -76,7 +83,7 @@ const ProfileDialogContent = () => {
         <div className="flex items-center space-x-4">
           <UserRound />
           <Input
-            value={"Username"}
+            value={userDetails?.username}
             placeholder="Name"
             disabled
             className="border-none outline-none ring-0"

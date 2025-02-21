@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useTheme } from "next-themes";
 import { useQuery } from "convex/react";
+import { ConvexError } from "convex/values";
+import { toast } from "sonner";
 import { UserButton, useUser } from "@clerk/clerk-react";
 import {
   Handshake,
@@ -34,6 +36,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 import { api } from "@/convex/_generated/api";
+import { useMutationHandler } from "@/hooks/useMutationHandler";
 
 const statuses = [
   "😎 Speak Freely",
@@ -54,6 +57,9 @@ const ProfileDialogContent = () => {
 
   const { user } = useUser();
   const userDetails = useQuery(api.status.get, { clerkId: user?.id ?? "" });
+  const { mutate: updateStatus, state: updateStatusState } = useMutationHandler(
+    api.status.update
+  );
 
   const form = useForm<z.infer<typeof requestFriendFormSchema>>({
     resolver: zodResolver(requestFriendFormSchema),
@@ -64,6 +70,20 @@ const ProfileDialogContent = () => {
 
   async function onSubmit({ email }: z.infer<typeof requestFriendFormSchema>) {
     console.log(email);
+  }
+
+  async function onUpdateStaus() {
+    try {
+      await updateStatus({ clerkId: user?.id ?? "", status });
+      toast.success("Status updated successfully");
+      setStatus("");
+      setUpdateStatusDialog(false);
+    } catch (error) {
+      toast.error(
+        error instanceof ConvexError ? error.data : "An error occurred"
+      );
+      console.log("Error updating status", error);
+    }
   }
 
   return (
@@ -182,6 +202,7 @@ const ProfileDialogContent = () => {
               placeholder={userDetails?.status}
               className="resize-none h-48"
               onChange={(e) => setStatus(e.target.value)}
+              disabled={updateStatusState === "loading"}
             />
 
             <div>
@@ -198,8 +219,9 @@ const ProfileDialogContent = () => {
 
             <Button
               type="button"
+              onClick={onUpdateStaus}
               className="ml-auto w-fit bg-primary-main"
-              disabled
+              disabled={updateStatusState === "loading"}
             >
               Update Status
             </Button>

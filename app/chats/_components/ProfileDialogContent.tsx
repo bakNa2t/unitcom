@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTheme } from "next-themes";
 import { useQuery } from "convex/react";
-import { useUser } from "@clerk/clerk-react";
+import { UserButton, useUser } from "@clerk/clerk-react";
 import {
   Handshake,
   LaptopMinimal,
@@ -69,7 +69,7 @@ const ProfileDialogContent = () => {
   return (
     <div>
       <Card className="flex flex-col space-y-4 border-0">
-        <CardTitle>Profile</CardTitle>
+        <CardTitle>Profile Details</CardTitle>
 
         <div>
           <Avatar className="w-16 h-16 mx-auto">
@@ -94,7 +94,15 @@ const ProfileDialogContent = () => {
 
         <div className="flex items-center justify-center space-x-6">
           <p>Manage your profile</p>
-          <button>User Button</button>
+          <UserButton
+            appearance={{
+              elements: {
+                userButtonPopoverCard: {
+                  pointerEvents: "initial",
+                },
+              },
+            }}
+          />
         </div>
 
         <Separator />
@@ -165,13 +173,13 @@ const ProfileDialogContent = () => {
           <DialogTrigger>
             <div className="flex items-center space-x-2">
               <Pencil />
-              <p>{"Display current status"}</p>
+              <p>{userDetails?.status}</p>
             </div>
           </DialogTrigger>
           <DialogContent>
             <Textarea
               value={status}
-              placeholder="Dispaly current status"
+              placeholder={userDetails?.status}
               className="resize-none h-48"
               onChange={(e) => setStatus(e.target.value)}
             />

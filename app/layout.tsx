@@ -2,8 +2,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
-import { ThemeProvider } from "@/components/providers/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ConvexClientProvider } from "@/components/providers/convex-provider";
 
 import "./globals.css";
@@ -44,6 +45,7 @@ export default function RootLayout({
             <TooltipProvider>
               <main>{children}</main>
             </TooltipProvider>
+            <Toaster richColors />
           </ThemeProvider>
         </ConvexClientProvider>
       </body>

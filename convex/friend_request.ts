@@ -72,3 +72,31 @@ export const create = mutation({
     return request;
   },
 });
+
+export const decline = mutation({
+  args: {
+    id: v.id("friend_requests"),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) throw new ConvexError("Not authenticated");
+
+    const currentUser = await getUserDataById({
+      ctx,
+      clerkId: identity.subject,
+    });
+
+    if (!currentUser) throw new ConvexError("User not found");
+
+    const currentFriendRequest = await ctx.db.get(args.id);
+
+    if (
+      !currentFriendRequest ||
+      currentFriendRequest.receiver !== currentUser._id
+    )
+      throw new ConvexError("Invalid friend request");
+
+    await ctx.db.delete(args.id);
+  },
+});

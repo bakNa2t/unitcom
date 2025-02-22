@@ -7,6 +7,7 @@ import { UserButton, useUser } from "@clerk/clerk-react";
 import {
   Handshake,
   LaptopMinimal,
+  Loader2,
   Pencil,
   Sun,
   SunMoon,
@@ -17,6 +18,7 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { FriendRequestCard } from "./FriendRequestCard";
 import { Card, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
@@ -35,6 +37,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { api } from "@/convex/_generated/api";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
@@ -191,17 +194,27 @@ const ProfileDialogContent = () => {
           </DialogTrigger>
 
           <DialogContent>
-            <p className="text-xl text-center font-bold">
-              {friendRequests ? (
-                friendRequests.length === 0 ? (
-                  <p>No friend requests yet</p>
-                ) : (
-                  "Friend requests"
-                )
+            {friendRequests ? (
+              friendRequests.length === 0 ? (
+                <p className="text-xl text-center font-bold">
+                  No friend requests yet
+                </p>
               ) : (
-                "Loading..."
-              )}
-            </p>
+                <ScrollArea className="h-[400px] rounded-md">
+                  {friendRequests.map((request) => (
+                    <FriendRequestCard
+                      key={request.sender._id}
+                      email={request.sender.email}
+                      username={request.sender.username}
+                      id={request._id}
+                      imageUrl={request?.sender.imageUrl}
+                    />
+                  ))}
+                </ScrollArea>
+              )
+            ) : (
+              <Loader2 />
+            )}
           </DialogContent>
         </Dialog>
 

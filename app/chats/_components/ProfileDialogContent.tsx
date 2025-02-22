@@ -34,6 +34,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Badge } from "@/components/ui/badge";
 
 import { api } from "@/convex/_generated/api";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
@@ -55,6 +56,10 @@ const ProfileDialogContent = () => {
   const [status, setStatus] = useState("");
   const { setTheme } = useTheme();
 
+  const { mutate: createFriendRequest, state: createFriendRequestState } =
+    useMutationHandler(api.friend_request.create);
+  const friendRequests = useQuery(api.friend_requests.get);
+
   const { user } = useUser();
   const userDetails = useQuery(api.status.get, { clerkId: user?.id ?? "" });
   const { mutate: updateStatus, state: updateStatusState } = useMutationHandler(
@@ -68,7 +73,9 @@ const ProfileDialogContent = () => {
     },
   });
 
-  async function onSubmit({ email }: z.infer<typeof requestFriendFormSchema>) {
+  async function onFriendRequest({
+    email,
+  }: z.infer<typeof requestFriendFormSchema>) {
     console.log(email);
   }
 
@@ -138,7 +145,7 @@ const ProfileDialogContent = () => {
           <DialogContent>
             <Form {...form}>
               <form
-                onSubmit={form.handleSubmit(onSubmit)}
+                onSubmit={form.handleSubmit(onFriendRequest)}
                 className="space-y-8"
               >
                 <FormField
@@ -177,12 +184,23 @@ const ProfileDialogContent = () => {
             <div className="flex items-center space-x-2">
               <Handshake />
               <p>View friend requests</p>
+              {friendRequests && friendRequests.length > 0 && (
+                <Badge variant="outline">{friendRequests.length}</Badge>
+              )}
             </div>
           </DialogTrigger>
 
           <DialogContent>
             <p className="text-xl text-center font-bold">
-              No friend requests yet
+              {friendRequests ? (
+                friendRequests.length === 0 ? (
+                  <p>No friend requests yet</p>
+                ) : (
+                  "Friend requests"
+                )
+              ) : (
+                "Loading..."
+              )}
             </p>
           </DialogContent>
         </Dialog>

@@ -160,7 +160,7 @@ const ProfileDialogContent = () => {
                       <FormControl>
                         <Input
                           placeholder="guest@mail.com"
-                          disabled={true}
+                          disabled={createFriendRequestState === "loading"}
                           {...field}
                         />
                       </FormControl>
@@ -172,7 +172,10 @@ const ProfileDialogContent = () => {
                   )}
                 />
 
-                <Button type="submit" disabled={true}>
+                <Button
+                  type="submit"
+                  disabled={createFriendRequestState === "loading"}
+                >
                   Submit
                 </Button>
               </form>

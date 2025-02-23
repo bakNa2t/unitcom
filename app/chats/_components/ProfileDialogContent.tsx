@@ -79,7 +79,17 @@ const ProfileDialogContent = () => {
   async function onFriendRequest({
     email,
   }: z.infer<typeof requestFriendFormSchema>) {
-    console.log(email);
+    try {
+      await createFriendRequest({ email });
+
+      form.reset();
+      toast.success("Friend request sent successfully");
+    } catch (error) {
+      toast.error(
+        error instanceof ConvexError ? error.data : "An error occurred"
+      );
+      console.log("Error creating friend request", error);
+    }
   }
 
   async function onUpdateStaus() {

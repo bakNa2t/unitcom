@@ -57,6 +57,7 @@ const requestFriendFormSchema = z.object({
 const ProfileDialogContent = () => {
   const [updateStatusDialog, setUpdateStatusDialog] = useState(false);
   const [status, setStatus] = useState("");
+  const [friendRequestModal, setFriendRequestModal] = useState(false);
   const { setTheme } = useTheme();
 
   const { mutate: createFriendRequest, state: createFriendRequestState } =
@@ -84,6 +85,8 @@ const ProfileDialogContent = () => {
 
       form.reset();
       toast.success("Friend request sent successfully");
+
+      setFriendRequestModal(false);
     } catch (error) {
       toast.error(
         error instanceof ConvexError ? error.data : "An error occurred"
@@ -147,7 +150,10 @@ const ProfileDialogContent = () => {
 
         <Separator />
 
-        <Dialog>
+        <Dialog
+          open={friendRequestModal}
+          onOpenChange={() => setFriendRequestModal(!friendRequestModal)}
+        >
           <DialogTrigger>
             <div className="flex items-center space-x-2">
               <UserRoundSearch />

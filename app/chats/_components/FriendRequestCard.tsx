@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { ConvexError } from "convex/values";
-import { Handshake } from "lucide-react";
+import { Handshake, X } from "lucide-react";
 import { toast } from "sonner";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -9,6 +9,7 @@ import { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
 import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
 
 type FriendRequestCardProps = {
   id: Id<"friend_requests">;
@@ -67,16 +68,28 @@ export const FriendRequestCard: FC<FriendRequestCardProps> = ({
             <p className="text-sm text-muted-foreground">{email}</p>
           </div>
         </div>
+      </div>
 
-        <div className="flex items-center gap-x-5">
-          <Switch
-            disabled={
-              acceptRequestState === "loading" ||
-              declineRequestState === "loading"
-            }
-            onCheckedChange={() => handleAcceptRequest(id)}
-          />
-        </div>
+      <div className="flex items-center gap-x-5">
+        <Switch
+          disabled={
+            acceptRequestState === "loading" ||
+            declineRequestState === "loading"
+          }
+          onCheckedChange={() => handleAcceptRequest(id)}
+        />
+
+        <Button
+          size="icon"
+          variant="destructive"
+          onClick={() => handleDenyRequest(id)}
+          disabled={
+            acceptRequestState === "loading" ||
+            declineRequestState === "loading"
+          }
+        >
+          <X />
+        </Button>
       </div>
     </div>
   );

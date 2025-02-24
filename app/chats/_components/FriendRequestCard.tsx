@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
+import { Switch } from "@/components/ui/switch";
 
 type FriendRequestCardProps = {
   id: Id<"friend_requests">;
@@ -65,6 +66,16 @@ export const FriendRequestCard: FC<FriendRequestCardProps> = ({
             <p className="text-sm font-medium leading-none">{username}</p>
             <p className="text-sm text-muted-foreground">{email}</p>
           </div>
+        </div>
+
+        <div className="flex items-center gap-x-5">
+          <Switch
+            disabled={
+              acceptRequestState === "loading" ||
+              declineRequestState === "loading"
+            }
+            onCheckedChange={() => handleAcceptRequest(id)}
+          />
         </div>
       </div>
     </div>

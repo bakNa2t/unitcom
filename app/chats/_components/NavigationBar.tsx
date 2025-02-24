@@ -4,6 +4,7 @@ import { FC, ReactNode, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { MessageCircle, Phone } from "lucide-react";
 import Link from "next/link";
+import { useUser } from "@clerk/clerk-react";
 
 import ProfileDialogContent from "./ProfileDialogContent";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
@@ -25,8 +26,10 @@ type NavigationBarProps = {
   trigger: ReactNode;
 };
 
-export const NavigationBar: FC<NavigationBarProps> = () => {
+export const NavigationBar: FC<NavigationBarProps> = ({ trigger }) => {
   const pathname = usePathname();
+
+  const { user } = useUser();
 
   const menuItems = useMemo(
     () => [
@@ -76,6 +79,23 @@ export const NavigationBar: FC<NavigationBarProps> = () => {
             </NavigationMenuList>
           </NavigationMenu>
         </div>
+
+        <div className="hidden md:block">
+          <Dialog>
+            <NavigationMenu orientation="vertical">
+              <DialogTrigger>
+                <Avatar>
+                  <AvatarImage src={user?.imageUrl} />
+                  <AvatarFallback>User</AvatarFallback>
+                </Avatar>
+              </DialogTrigger>
+
+              <DialogContent>
+                <ProfileDialogContent />
+              </DialogContent>
+            </NavigationMenu>
+          </Dialog>
+        </div>
       </div>
 
       <div className="md:hidden fixed flex justify-between w-svw top-0 left-0 h-20 z-10 px-10 bg-white dark:bg-slate-950">
@@ -99,6 +119,8 @@ export const NavigationBar: FC<NavigationBarProps> = () => {
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
+
+        {trigger}
       </div>
     </>
   );

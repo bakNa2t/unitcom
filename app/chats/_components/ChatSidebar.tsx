@@ -1,4 +1,4 @@
-import { SidebarContainer } from "@/components/SidebarContainer";
+import { SidebarContainer } from "@/app/chats/_components/SidebarContainer";
 
 const ChatSidebar = () => {
   return (

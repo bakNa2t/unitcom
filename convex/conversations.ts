@@ -5,7 +5,7 @@ import { getUserDataById } from "./_utils/utils";
 
 export const get = query({
   args: {},
-  handler: async (ctx, args) => {
+  handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
 
     if (!identity) throw new ConvexError("Not authenticated");
@@ -23,7 +23,7 @@ export const get = query({
       .collect();
 
     const conversations = await Promise.all(
-      conversationMemberships.map(async (conversationMembership) => {
+      conversationMemberships?.map(async (conversationMembership) => {
         const conversation = await ctx.db.get(
           conversationMembership.conversationId
         );
@@ -41,13 +41,13 @@ export const get = query({
         const allConversationMemberships = await ctx.db
           .query("conversation_members")
           .withIndex("by_conversationId", (q) =>
-            q.eq("conversationId", conversation._id)
+            q.eq("conversationId", conversation?._id)
           )
           .collect();
 
-        const lastMessage = getLastMessageDetails({
+        const lastMessage = await getLastMessageDetails({
           ctx,
-          conversationId: conversation.lastMessage,
+          conversationId: conversation?.lastMessage,
         });
 
         const lastSeenMessage = conversationMemberships[index].lastSeenMessage
@@ -126,7 +126,7 @@ const getLastMessageDetails = async ({
   };
 };
 
-const getMessageContent = (type: string, content: any) => {
+const getMessageContent = (type: string, content: string[]) => {
   switch (type) {
     case "text":
       return content;

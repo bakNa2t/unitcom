@@ -29,6 +29,8 @@ export const SidebarContainer: FC<SidebarContainerProps> = ({
             className="w-full h-8 p-2 rounded-lg focus:outline-none bg-gray-200 dark:bg-gray-800"
           />
         </div>
+
+        {children}
       </div>
     </ScrollArea>
   );

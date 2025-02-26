@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useQuery } from "convex/react";
 import { useForm } from "react-hook-form";
 import { Users } from "lucide-react";
@@ -15,9 +16,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
-import { api } from "@/convex/_generated/api";
-import { useMutationHandler } from "@/hooks/useMutationHandler";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -27,7 +25,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { useMemo } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+import { api } from "@/convex/_generated/api";
+import { useMutationHandler } from "@/hooks/useMutationHandler";
 
 const CreateChatNewGroupSchema = z.object({
   name: z.string().min(2, {
@@ -107,7 +108,10 @@ export const ChatNewGroup = () => {
                       <FormLabel>Contacts</FormLabel>
                       <FormControl>
                         <DropdownMenu>
-                          <DropdownMenuTrigger asChild disabled={true}>
+                          <DropdownMenuTrigger
+                            asChild
+                            disabled={unselectedContacts.length === 0}
+                          >
                             <Button variant="outline" className="ml-4">
                               Select contacts
                             </Button>
@@ -122,10 +126,23 @@ export const ChatNewGroup = () => {
                               <DropdownMenuCheckboxItem
                                 key={contact._id}
                                 className="flex items-center gap-2 w-full p-2"
+                                onCheckedChange={(checked) => {
+                                  if (checked) {
+                                    form.setValue("members", [
+                                      ...members,
+                                      contact._id,
+                                    ]);
+                                  }
+                                }}
                               >
-                                <span className="w-full">
-                                  {contact.username}
-                                </span>
+                                <Avatar className="w-8 h-8">
+                                  <AvatarImage src={contact.imageUrl} />
+                                  <AvatarFallback>
+                                    {contact.username.slice(0, 2)}
+                                  </AvatarFallback>
+                                </Avatar>
+
+                                <h4 className="truncate">{contact.username}</h4>
                               </DropdownMenuCheckboxItem>
                             ))}
                           </DropdownMenuContent>

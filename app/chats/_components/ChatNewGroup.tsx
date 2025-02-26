@@ -18,6 +18,16 @@ import { Input } from "@/components/ui/input";
 
 import { api } from "@/convex/_generated/api";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { useMemo } from "react";
 
 const CreateChatNewGroupSchema = z.object({
   name: z.string().min(2, {
@@ -42,6 +52,21 @@ export const ChatNewGroup = () => {
     },
   });
 
+  const members = form.watch("members", []);
+
+  const unselectedContacts = useMemo(() => {
+    return contacts
+      ? contacts.filter((contact) => !members.includes(contact._id))
+      : [];
+  }, [contacts, members]);
+
+  const onCreateChatNewGroup = async ({
+    name,
+    members,
+  }: z.infer<typeof CreateChatNewGroupSchema>) => {
+    console.log(name, members);
+  };
+
   return (
     <div>
       <Dialog>
@@ -49,8 +74,11 @@ export const ChatNewGroup = () => {
           <Users size={20} className="cursor-pointer" />
         </DialogTrigger>
         <DialogContent>
-          <Form {...form} onSubmit={form.handleSubmit(() => {})}>
-            <form className="">
+          <Form {...form}>
+            <form
+              className="space-y-8"
+              onSubmit={form.handleSubmit(onCreateChatNewGroup)}
+            >
               <fieldset>
                 <FormField
                   control={form.control}
@@ -67,6 +95,42 @@ export const ChatNewGroup = () => {
                       </FormDescription>
 
                       <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="members"
+                  render={() => (
+                    <FormItem>
+                      <FormLabel>Contacts</FormLabel>
+                      <FormControl>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild disabled={true}>
+                            <Button variant="outline" className="ml-4">
+                              Select contacts
+                            </Button>
+                          </DropdownMenuTrigger>
+
+                          <DropdownMenuContent className="w-full">
+                            <DropdownMenuLabel>Contacts</DropdownMenuLabel>
+
+                            <DropdownMenuSeparator />
+
+                            {unselectedContacts.map((contact) => (
+                              <DropdownMenuCheckboxItem
+                                key={contact._id}
+                                className="flex items-center gap-2 w-full p-2"
+                              >
+                                <span className="w-full">
+                                  {contact.username}
+                                </span>
+                              </DropdownMenuCheckboxItem>
+                            ))}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </FormControl>
                     </FormItem>
                   )}
                 />

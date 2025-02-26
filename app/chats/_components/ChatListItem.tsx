@@ -1,6 +1,7 @@
 import { FC } from "react";
 import Link from "next/link";
 
+import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { cn } from "@/lib/utils";
@@ -50,6 +51,11 @@ export const ChatListItem: FC<ChatListItemProps> = ({
           <p className="text-sm text-muted-foreground">
             {timestamp ? new Date(timestamp).toLocaleTimeString() : ""}
           </p>
+          {unseenMessageCount && unseenMessageCount > 0 ? (
+            <Badge variant="secondary" className="text-gray-500">
+              {unseenMessageCount}
+            </Badge>
+          ) : null}
         </div>
       </div>
     </Link>

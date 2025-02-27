@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useQuery } from "convex/react";
 import { useForm } from "react-hook-form";
-import { Users } from "lucide-react";
+import { Users, X } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -29,6 +29,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { api } from "@/convex/_generated/api";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
+import { Card } from "@/components/ui/card";
 
 const CreateChatNewGroupSchema = z.object({
   name: z.string().min(2, {
@@ -152,6 +153,37 @@ export const ChatNewGroup = () => {
                   )}
                 />
               </fieldset>
+
+              {members.length ? (
+                <Card className="flex otems-center gap-3 w-full h-24 p-2 overflow-x-auto">
+                  {contacts
+                    ?.filter((contact) => members.includes(contact._id))
+                    .map((friend) => (
+                      <div
+                        key={friend._id}
+                        className="flex flex-col items-center gap-1"
+                      >
+                        <div className="relative">
+                          <Avatar className="w-8 h-8">
+                            <AvatarImage src={friend.imageUrl} />
+                            <AvatarFallback>
+                              {friend.username.slice(0, 2)}
+                            </AvatarFallback>
+                          </Avatar>
+
+                          <X
+                            onClick={() =>
+                              form.setValue("members", [
+                                ...members.filter((id) => id !== friend._id),
+                              ])
+                            }
+                            className="absolute w-4 h-4 text-muted-foreground bottom-8 left-7 bg-muted rounded-full cursor-pointer"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                </Card>
+              ) : null}
             </form>
           </Form>
         </DialogContent>

@@ -1,9 +1,11 @@
 import { useMemo } from "react";
-import { useQuery } from "convex/react";
 import { useForm } from "react-hook-form";
+import { useQuery } from "convex/react";
+import { ConvexError } from "convex/values";
 import { Users, X } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 
 import {
   Dialog,
@@ -40,8 +42,8 @@ const CreateChatNewGroupSchema = z.object({
   name: z.string().min(2, {
     message: "Group name must be at least 2 characters long",
   }),
-  members: z.array(z.string()).min(2, {
-    message: "Group must have at least 2 members",
+  members: z.array(z.string()).min(1, {
+    message: "Group must have at least 1 members",
   }),
 });
 
@@ -71,11 +73,21 @@ export const ChatNewGroup = () => {
     name,
     members,
   }: z.infer<typeof CreateChatNewGroupSchema>) => {
-    console.log(name, members);
+    await createChatGroup({ name, members });
+
+    form.reset();
+    toast.success("Group created successfully");
+    try {
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        error instanceof ConvexError ? error.data : "An error occurred"
+      );
+    }
   };
 
   return (
-    <div>
+    <>
       <Dialog>
         <DialogTrigger className="w-full">
           <Users size={20} className="cursor-pointer" />
@@ -160,7 +172,7 @@ export const ChatNewGroup = () => {
               </fieldset>
 
               {members.length ? (
-                <Card className="flex otems-center gap-3 w-full h-24 p-2 overflow-x-auto">
+                <Card className="flex otems-center gap-3 w-full h-24 py-6 px-2 overflow-x-auto">
                   {contacts
                     ?.filter((contact) => members.includes(contact._id))
                     .map((friend) => (
@@ -202,6 +214,6 @@ export const ChatNewGroup = () => {
           </Form>
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 };

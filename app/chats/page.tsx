@@ -11,7 +11,11 @@ const ChatPage = () => {
       <NavigationBar trigger={<ChatNewGroup />} />
 
       <div className="hidden md:grid max-w-56 text-center mx-auto place-content-center">
-        <FaSignalMessenger className="text-6xl text-gray-400" />
+        <FaSignalMessenger size={200} className="text-6xl text-primary-main" />
+        <p className="text-sm mt-5 text-primary-main">
+          Welcome to Unitcom messenger! Select or create a chat to start
+          messaging
+        </p>
       </div>
     </>
   );

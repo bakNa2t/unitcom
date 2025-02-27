@@ -5,7 +5,12 @@ import { Users, X } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -184,6 +189,15 @@ export const ChatNewGroup = () => {
                     ))}
                 </Card>
               ) : null}
+
+              <DialogFooter>
+                <Button
+                  type="submit"
+                  disabled={createChatGroupState === "loading"}
+                >
+                  Create group
+                </Button>
+              </DialogFooter>
             </form>
           </Form>
         </DialogContent>

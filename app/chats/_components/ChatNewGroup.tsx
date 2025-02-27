@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useQuery } from "convex/react";
 import { ConvexError } from "convex/values";
@@ -33,10 +33,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card } from "@/components/ui/card";
 
 import { api } from "@/convex/_generated/api";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
-import { Card } from "@/components/ui/card";
 
 const CreateChatNewGroupSchema = z.object({
   name: z.string().min(2, {
@@ -48,6 +48,8 @@ const CreateChatNewGroupSchema = z.object({
 });
 
 export const ChatNewGroup = () => {
+  const [openGroupModal, setOpenGroupModal] = useState(false);
+
   const contacts = useQuery(api.contacts.get);
 
   const { mutate: createChatGroup, state: createChatGroupState } =
@@ -77,6 +79,7 @@ export const ChatNewGroup = () => {
 
     form.reset();
     toast.success("Group created successfully");
+    setOpenGroupModal(false);
     try {
     } catch (error) {
       console.log(error);
@@ -88,7 +91,10 @@ export const ChatNewGroup = () => {
 
   return (
     <>
-      <Dialog>
+      <Dialog
+        open={openGroupModal}
+        onOpenChange={() => setOpenGroupModal(!openGroupModal)}
+      >
         <DialogTrigger className="w-full">
           <Users size={20} className="cursor-pointer" />
         </DialogTrigger>

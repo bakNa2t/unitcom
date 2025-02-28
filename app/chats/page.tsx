@@ -4,6 +4,7 @@ import { FaSignalMessenger } from "react-icons/fa6";
 
 import { ChatNewGroup } from "./_components/ChatNewGroup";
 import { NavigationBar } from "./_components/NavigationBar";
+import { ChatMobileContent } from "./_components/ChatMobileContent";
 
 const ChatPage = () => {
   return (
@@ -16,6 +17,10 @@ const ChatPage = () => {
           Welcome to Unitcom messenger! Select or create a chat to start
           messaging
         </p>
+      </div>
+
+      <div className="md:hidden flex flex-col space-y-2">
+        <ChatMobileContent />
       </div>
     </>
   );

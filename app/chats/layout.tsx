@@ -13,7 +13,7 @@ const ChatLayout: FC<ChatLayoutProps> = ({ children }) => {
         <ChatsBlock>{children}</ChatsBlock>
       </div>
 
-      <div className="md:hidden my-20 md:px-2 bg-slate-200">{children}</div>
+      <div className="md:hidden my-20 md:px-2">{children}</div>
     </>
   );
 };

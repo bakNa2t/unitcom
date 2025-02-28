@@ -1,5 +1,5 @@
 import { ConvexError, v } from "convex/values";
-import { query } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 import { getUserDataById } from "./_utils/utils";
 
 export const get = query({
@@ -74,5 +74,50 @@ export const get = query({
         otherMembers,
       };
     }
+  },
+});
+
+export const deleteGroup = mutation({
+  args: {
+    conversationId: v.id("conversations"),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) throw new ConvexError("Not authenticated");
+
+    const currentUser = await getUserDataById({
+      ctx,
+      clerkId: identity.subject,
+    });
+
+    if (!currentUser) throw new ConvexError("User not found");
+
+    const conversation = await ctx.db.get(args.conversationId);
+
+    if (!conversation) throw new ConvexError("Conversation not found");
+
+    const memberships = await ctx.db
+      .query("conversation_members")
+      .withIndex("by_conversationId", (q) =>
+        q.eq("conversationId", args.conversationId)
+      )
+      .collect();
+
+    if (!memberships || memberships.length <= 1)
+      throw new ConvexError("Cannot delete group with only one member");
+
+    const messages = await ctx.db
+      .query("messages")
+      .withIndex("by_conversationId", (q) =>
+        q.eq("conversationId", args.conversationId)
+      )
+      .collect();
+
+    await ctx.db.delete(args.conversationId);
+    await Promise.all(
+      memberships.map((membership) => ctx.db.delete(membership._id))
+    );
+    await Promise.all(messages.map((message) => ctx.db.delete(message._id)));
   },
 });

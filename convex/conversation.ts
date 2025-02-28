@@ -77,6 +77,64 @@ export const get = query({
   },
 });
 
+export const getConversationMember = query({
+  args: {
+    conversationId: v.id("conversations"),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) throw new ConvexError("Not authenticated");
+
+    const currentUser = await getUserDataById({
+      ctx,
+      clerkId: identity.subject,
+    });
+
+    if (!currentUser) throw new ConvexError("User not found");
+
+    const conversation = await ctx.db.get(args.conversationId);
+
+    if (!conversation) throw new ConvexError("Conversation not found");
+
+    const membership = await ctx.db
+      .query("conversation_members")
+      .withIndex("by_memberId_conversationId", (q) =>
+        q.eq("memberId", currentUser._id).eq("conversationId", conversation._id)
+      )
+      .unique();
+
+    if (!membership) throw new ConvexError("Not a member of conversation");
+
+    const allConversationMembers = await ctx.db
+      .query("conversation_members")
+      .withIndex("by_conversationId", (q) =>
+        q.eq("conversationId", args.conversationId)
+      )
+      .collect();
+
+    const members = await Promise.all(
+      allConversationMembers.map(async (membership) => {
+        const member = await ctx.db.get(membership.memberId);
+
+        if (!member) throw new ConvexError("Member not found");
+
+        return {
+          username: member.username,
+          imageUrl: member.imageUrl,
+          email: member.email,
+          _id: member._id,
+        };
+      })
+    );
+
+    return {
+      members,
+      conversation,
+    };
+  },
+});
+
 export const deleteGroup = mutation({
   args: {
     conversationId: v.id("conversations"),

@@ -98,7 +98,7 @@ export const NavigationBar: FC<NavigationBarProps> = ({ trigger }) => {
         </div>
       </div>
 
-      <div className="md:hidden fixed flex justify-between w-svw top-0 left-0 h-20 z-10 px-10 bg-white dark:bg-slate-950">
+      <div className="md:hidden fixed flex justify-between items-center w-svw top-0 left-0 h-20 z-10 px-10 bg-white dark:bg-slate-950">
         <NavigationMenu orientation="horizontal">
           <NavigationMenuList>
             <NavigationMenuItem>
@@ -120,7 +120,7 @@ export const NavigationBar: FC<NavigationBarProps> = ({ trigger }) => {
           </NavigationMenuList>
         </NavigationMenu>
 
-        {trigger}
+        <div>{trigger}</div>
       </div>
     </>
   );

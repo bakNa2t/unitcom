@@ -1,7 +1,6 @@
 "use client";
 
 import { FC, ReactNode, useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
 
 import {
   ResizableHandle,
@@ -12,7 +11,7 @@ import { useSidebarWidth } from "@/hooks/useSidebarWidth";
 
 type SharedBlockProps = {
   children: ReactNode;
-  SidebarComponent: FC<any>;
+  SidebarComponent: FC<() => JSX.Element>;
   SidebarProps?: any;
 };
 
@@ -21,7 +20,6 @@ export const SharedBlock: FC<SharedBlockProps> = ({
   SidebarComponent,
   SidebarProps,
 }) => {
-  const pathName = usePathname();
   const [isRendered, setIsRendered] = useState(false);
   const { sidebarWidth, setSidebarWidth } = useSidebarWidth();
 
@@ -48,7 +46,7 @@ export const SharedBlock: FC<SharedBlockProps> = ({
           className="border-r border-r-gray-400 dark:border-r-gray-800"
         />
 
-        <ResizablePanel className="!overflow-y-auto my-20 bg-slate-200">
+        <ResizablePanel className="!overflow-y-auto my-20">
           <div className="hidden md:block"></div>
           {children}
         </ResizablePanel>

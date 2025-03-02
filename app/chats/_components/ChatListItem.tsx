@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import { cn } from "@/lib/utils";
+import { cn, getFormatedTimestamp } from "@/lib/utils";
 
 type ChatListItemProps = {
   name: string;
@@ -20,7 +20,7 @@ type ChatListItemProps = {
 export const ChatListItem: FC<ChatListItemProps> = ({
   name,
   lastMessageContent,
-  lastMessageSender,
+  //   lastMessageSender,
   timestamp,
   avatarUrl,
   isActive,
@@ -31,7 +31,8 @@ export const ChatListItem: FC<ChatListItemProps> = ({
     <Link
       href={`/chats/${chatId}`}
       className={cn("flex justify-between p-3 rounded-2xl", {
-        "bg-gray-200 dark:bg-gray-800": isActive,
+        "bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400":
+          isActive,
       })}
     >
       <div className="flex space-x-3">
@@ -49,7 +50,7 @@ export const ChatListItem: FC<ChatListItemProps> = ({
 
         <div className="flex flex-col items-end justify-between">
           <p className="text-sm text-muted-foreground">
-            {timestamp ? new Date(timestamp).toLocaleTimeString() : ""}
+            {timestamp && getFormatedTimestamp(timestamp)}
           </p>
           {unseenMessageCount && unseenMessageCount > 0 ? (
             <Badge variant="secondary" className="text-gray-500">

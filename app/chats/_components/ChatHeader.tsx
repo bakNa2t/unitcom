@@ -11,6 +11,8 @@ import { api } from "@/convex/_generated/api";
 import { cn } from "@/lib/utils";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
 import { useSidebarWidth } from "@/hooks/useSidebarWidth";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 type ChatHeaderProps = {
   chatAvatar: string;
@@ -39,7 +41,7 @@ export const ChatHeader: FC<ChatHeaderProps> = ({
   return (
     <div
       className={cn(
-        "fixed flex items-center justify-between w-full h-20 top-0 bg-white dark:bg-gray-800 px-3 md:pr-10 space-x-3 x-30"
+        "fixed flex items-center justify-between w-full h-20 top-0 bg-white dark:bg-slate-900 px-3 md:pr-10 space-x-3 x-30"
       )}
       style={isDesktop ? { width: `calc(100% - ${sidebarWidth + 3}%)` } : {}}
     >
@@ -51,6 +53,20 @@ export const ChatHeader: FC<ChatHeaderProps> = ({
             </Link>
           </Button>
         </div>
+
+        <Sheet>
+          <SheetTrigger className="flex items-center space-x-4 cursor-pointer">
+            <Avatar>
+              <AvatarImage src={chatAvatar} />
+              <AvatarFallback>{username[0]}</AvatarFallback>
+            </Avatar>
+            <h2 className="font-bold text-lg">{username}</h2>
+          </SheetTrigger>
+
+          <SheetContent className="w-80 md:w-96 bg-white dark:bg-slate-900 dark:text-white">
+            {isGroup ? <div>Group Sheet</div> : <div>Profile</div>}
+          </SheetContent>
+        </Sheet>
       </div>
     </div>
   );

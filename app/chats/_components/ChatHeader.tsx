@@ -3,16 +3,16 @@
 import { FC } from "react";
 import { useQuery } from "convex/react";
 import Link from "next/link";
+import { ChevronLeft, Phone, Video } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { ChevronLeft } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { api } from "@/convex/_generated/api";
 import { cn } from "@/lib/utils";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
 import { useSidebarWidth } from "@/hooks/useSidebarWidth";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 type ChatHeaderProps = {
   chatAvatar: string;
@@ -67,6 +67,11 @@ export const ChatHeader: FC<ChatHeaderProps> = ({
             {isGroup ? <div>Group Sheet</div> : <div>Profile</div>}
           </SheetContent>
         </Sheet>
+      </div>
+
+      <div className="flex items-center space-x-4">
+        <Video />
+        <Phone />
       </div>
     </div>
   );

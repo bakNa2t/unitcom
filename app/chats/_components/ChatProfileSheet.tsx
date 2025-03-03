@@ -1,5 +1,8 @@
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { FC } from "react";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { SheetTitle } from "@/components/ui/sheet";
 
 type ActionButtonProps = {
   Icon: FC;
@@ -38,5 +41,14 @@ export const ChatProfileSheet: FC<ChatProfileSheetProps> = ({
   groupsInCommon,
   chatAvatar,
 }) => {
-  return <ScrollArea>Profile Sheet</ScrollArea>;
+  return (
+    <ScrollArea className="h-full">
+      <Avatar className="w-20 h-20 mx-auto mt-10">
+        <AvatarImage src={chatAvatar} />
+        <AvatarFallback className="md:text-3xl">{username[0]}</AvatarFallback>
+      </Avatar>
+
+      <SheetTitle className="text-2xl text-center mt-2">{username}</SheetTitle>
+    </ScrollArea>
+  );
 };

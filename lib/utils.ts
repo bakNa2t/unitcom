@@ -33,3 +33,6 @@ export const getFormatedTimestamp = (timestamp: number) => {
     return format(date, "MMM");
   }
 };
+
+export const getFormattedToPluralize = (item: string, length: number) =>
+  length <= 1 ? item : `${item}s`;

@@ -90,7 +90,7 @@ export const ChatNewGroup = () => {
   };
 
   return (
-    <>
+    <div className="flex items-center">
       <Dialog
         open={openGroupModal}
         onOpenChange={() => setOpenGroupModal(!openGroupModal)}
@@ -220,6 +220,6 @@ export const ChatNewGroup = () => {
           </Form>
         </DialogContent>
       </Dialog>
-    </>
+    </div>
   );
 };

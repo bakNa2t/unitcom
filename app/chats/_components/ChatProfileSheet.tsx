@@ -1,9 +1,18 @@
-import { FC } from "react";
-import { Phone, Video } from "lucide-react";
+import { FC, useState } from "react";
+import { Ban, Phone, Video } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SheetTitle } from "@/components/ui/sheet";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 type ActionButtonProps = {
   Icon: FC;
@@ -42,6 +51,8 @@ export const ChatProfileSheet: FC<ChatProfileSheetProps> = ({
   groupsInCommon,
   chatAvatar,
 }) => {
+  const [blockConfirmation, setBlockConfirmation] = useState(false);
+
   return (
     <ScrollArea className="h-full">
       <Avatar className="w-20 h-20 mx-auto mt-10">
@@ -56,6 +67,36 @@ export const ChatProfileSheet: FC<ChatProfileSheetProps> = ({
         <ActionButton Icon={Video} label="Video" />
         <ActionButton Icon={Phone} label="Call" />
       </div>
+
+      <Separator className="my-5 border border-slate-200 dark:border-slate-800" />
+
+      <Dialog
+        open={blockConfirmation}
+        onOpenChange={() => setBlockConfirmation(!blockConfirmation)}
+      >
+        <DialogTrigger
+          className="w-full"
+          onClick={() => setBlockConfirmation(true)}
+        >
+          <div className="flex justify-center items-center w-full space-x-3 text-red-600">
+            <Ban />
+            <p>Block</p>
+          </div>
+        </DialogTrigger>
+
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="mb-5">
+              <p>Are you sure you want to block {username}?</p>
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="flex items-center space-x-3 justify-end">
+            <Button>Cancel</Button>
+            <Button variant="destructive">Confirm</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </ScrollArea>
   );
 };

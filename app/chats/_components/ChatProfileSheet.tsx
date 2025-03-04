@@ -1,4 +1,5 @@
 import { FC, useState } from "react";
+import Link from "next/link";
 import { useQuery } from "convex/react";
 import { Ban, Phone, Video } from "lucide-react";
 
@@ -19,7 +20,9 @@ import {
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { getFormattedToPluralize } from "@/lib/utils";
-import Link from "next/link";
+import { useMutationHandler } from "@/hooks/useMutationHandler";
+import { toast } from "sonner";
+import { ConvexError } from "convex/values";
 
 type ActionButtonProps = {
   Icon: FC;
@@ -64,7 +67,24 @@ export const ChatProfileSheet: FC<ChatProfileSheetProps> = ({
     id: chatId as Id<"conversations">,
   });
 
+  const { mutate: blockContact, state: blockContactState } = useMutationHandler(
+    api.contact.block
+  );
+
   const chatFiles = messages?.filter(({ type }) => type !== "file");
+
+  const handleBlockContact = async () => {
+    try {
+      await blockContact({ conversationId: chatId });
+
+      toast.success("Contact blocked successfully");
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        error instanceof ConvexError ? error.data : "An error occured"
+      );
+    }
+  };
 
   return (
     <ScrollArea className="h-full">
@@ -105,8 +125,20 @@ export const ChatProfileSheet: FC<ChatProfileSheetProps> = ({
           </DialogHeader>
 
           <div className="flex items-center space-x-3 justify-end">
-            <Button>Cancel</Button>
-            <Button variant="destructive">Confirm</Button>
+            <Button
+              variant="link"
+              onClick={() => setBlockConfirmation(false)}
+              disabled={blockContactState === "loading"}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleBlockContact}
+              disabled={blockContactState === "loading"}
+            >
+              Confirm
+            </Button>
           </div>
         </DialogContent>
       </Dialog>

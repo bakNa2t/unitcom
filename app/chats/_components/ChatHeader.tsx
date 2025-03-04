@@ -5,6 +5,7 @@ import { useQuery } from "convex/react";
 import Link from "next/link";
 import { ChevronLeft, Phone, Video } from "lucide-react";
 
+import { ChatProfileSheet } from "./ChatProfileSheet";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -34,7 +35,7 @@ export const ChatHeader: FC<ChatHeaderProps> = ({
 
   const conversations = useQuery(api.conversations.get);
 
-  const groupIsCommon = conversations?.filter(
+  const groupsInCommon = conversations?.filter(
     ({ conversation }) => conversation.isGroup
   );
 
@@ -64,7 +65,17 @@ export const ChatHeader: FC<ChatHeaderProps> = ({
           </SheetTrigger>
 
           <SheetContent className="w-80 md:w-96 bg-white dark:bg-slate-900 dark:text-white">
-            {isGroup ? <div>Group Sheet</div> : <div>Profile</div>}
+            {isGroup ? (
+              <div>Group Sheet</div>
+            ) : (
+              <ChatProfileSheet
+                chatId={chatId}
+                username={username}
+                status={status}
+                groupsInCommon={groupsInCommon}
+                chatAvatar={chatAvatar}
+              />
+            )}
           </SheetContent>
         </Sheet>
       </div>

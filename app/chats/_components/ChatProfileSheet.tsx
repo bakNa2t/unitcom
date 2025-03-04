@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { Phone, Video } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -49,6 +50,12 @@ export const ChatProfileSheet: FC<ChatProfileSheetProps> = ({
       </Avatar>
 
       <SheetTitle className="text-2xl text-center mt-2">{username}</SheetTitle>
+      <p className="text-center">{status}</p>
+
+      <div className="flex justify-center space-x-4 mt-5">
+        <ActionButton Icon={Video} label="Video" />
+        <ActionButton Icon={Phone} label="Call" />
+      </div>
     </ScrollArea>
   );
 };

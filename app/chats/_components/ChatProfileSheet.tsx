@@ -1,8 +1,10 @@
 import { FC, useState } from "react";
+import { useQuery } from "convex/react";
 import { Ban, Phone, Video } from "lucide-react";
 
+import { ChatTypeContent } from "./ChatTypeContent";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { SheetTitle } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -13,6 +15,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+
+import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
 
 type ActionButtonProps = {
   Icon: FC;
@@ -52,6 +57,12 @@ export const ChatProfileSheet: FC<ChatProfileSheetProps> = ({
   chatAvatar,
 }) => {
   const [blockConfirmation, setBlockConfirmation] = useState(false);
+
+  const messages = useQuery(api.messages.get, {
+    id: chatId as Id<"conversations">,
+  });
+
+  const chatFiles = messages?.filter(({ type }) => type !== "file");
 
   return (
     <ScrollArea className="h-full">
@@ -97,6 +108,25 @@ export const ChatProfileSheet: FC<ChatProfileSheetProps> = ({
           </div>
         </DialogContent>
       </Dialog>
+
+      <Separator className="my-5 border border-slate-200 dark:border-slate-800" />
+
+      <div className="my-5 font-bold text-lg">Shared Media</div>
+      {chatFiles?.length ? (
+        <ScrollArea className="max-w-80 rounded-md border">
+          <div className="flex space-x-4 p-4">
+            {chatFiles?.map(({ _id, type, content }) => (
+              <div key={_id} className="w-[200px] rounded-xl overflow-hidden">
+                <ChatTypeContent type={type} content={content} />
+              </div>
+            ))}
+          </div>
+
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
+      ) : (
+        <p>No shared media</p>
+      )}
     </ScrollArea>
   );
 };

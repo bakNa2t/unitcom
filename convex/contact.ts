@@ -3,7 +3,7 @@ import { ConvexError, v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { getUserDataById } from "./_utils/utils";
 
-export const leaveGroup = mutation({
+export const block = mutation({
   args: {
     conversationId: v.id("conversations"),
   },

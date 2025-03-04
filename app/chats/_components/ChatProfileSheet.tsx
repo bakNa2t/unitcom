@@ -18,6 +18,8 @@ import {
 
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+import { getFormattedToPluralize } from "@/lib/utils";
+import Link from "next/link";
 
 type ActionButtonProps = {
   Icon: FC;
@@ -111,22 +113,52 @@ export const ChatProfileSheet: FC<ChatProfileSheetProps> = ({
 
       <Separator className="my-5 border border-slate-200 dark:border-slate-800" />
 
-      <div className="my-5 font-bold text-lg">Shared Media</div>
-      {chatFiles?.length ? (
-        <ScrollArea className="max-w-80 rounded-md border">
-          <div className="flex space-x-4 p-4">
-            {chatFiles?.map(({ _id, type, content }) => (
-              <div key={_id} className="w-[200px] rounded-xl overflow-hidden">
-                <ChatTypeContent type={type} content={content} />
-              </div>
-            ))}
-          </div>
+      <div>
+        <p className="my-5 font-bold text-lg">Shared Media</p>
+        {chatFiles?.length ? (
+          <ScrollArea className="max-w-80 rounded-md border">
+            <div className="flex space-x-4 p-4">
+              {chatFiles?.map(({ _id, type, content }) => (
+                <div key={_id} className="w-[200px] rounded-xl overflow-hidden">
+                  <ChatTypeContent type={type} content={content} />
+                </div>
+              ))}
+            </div>
 
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
-      ) : (
-        <p>No shared media</p>
-      )}
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
+        ) : (
+          <p>No shared media</p>
+        )}
+      </div>
+
+      <Separator className="my-5 border border-slate-200 dark:border-slate-800" />
+
+      <div className="flex flex-col gap-y-2">
+        <p className="font-bold text-lg">
+          {groupsInCommon?.length || 0}{" "}
+          {getFormattedToPluralize("group", groupsInCommon?.length || 0)} in
+          common
+        </p>
+
+        <div>
+          {groupsInCommon?.length &&
+            groupsInCommon.map(({ conversation }) => (
+              <Link
+                href={`/chats/${conversation._id}`}
+                key={conversation._id}
+                className="flex items-center space-x-3 hover:bg-slate-400 px-3 py-2 rounded-md"
+              >
+                <Avatar>
+                  <AvatarFallback>
+                    {conversation?.name?.slice(0, 2) || "G"}
+                  </AvatarFallback>
+                </Avatar>
+                <p>{conversation.name}</p>
+              </Link>
+            ))}
+        </div>
+      </div>
     </ScrollArea>
   );
 };

@@ -132,6 +132,27 @@ export const ChatGroupSheet: FC<ChatGroupSheetProps> = ({
             </div>
           ))}
       </div>
+
+      <Separator className="my-5 border border-slate-200 dark:border-slate-800" />
+
+      <div className="mt-5">
+        <p className="my-5 font-bold text-lg">Shared Media</p>
+        {chatFiles?.length ? (
+          <ScrollArea className="max-w-80 rounded-md border">
+            <div className="flex space-x-4 p-4">
+              {chatFiles?.map(({ _id, type, content }) => (
+                <div key={_id} className="w-[200px] rounded-xl overflow-hidden">
+                  <ChatTypeContent type={type} content={content} />
+                </div>
+              ))}
+            </div>
+
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
+        ) : (
+          <p>No shared media</p>
+        )}
+      </div>
     </ScrollArea>
   );
 };

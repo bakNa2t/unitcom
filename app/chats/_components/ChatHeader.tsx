@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ChevronLeft, Phone, Video } from "lucide-react";
 
 import { ChatProfileSheet } from "./ChatProfileSheet";
+import { ChatGroupSheet } from "./ChatGroupSheet";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -66,7 +67,7 @@ export const ChatHeader: FC<ChatHeaderProps> = ({
 
           <SheetContent className="w-80 md:w-96 bg-white dark:bg-slate-900 dark:text-white">
             {isGroup ? (
-              <div>Group Sheet</div>
+              <ChatGroupSheet chatId={chatId} groupName={username} />
             ) : (
               <ChatProfileSheet
                 chatId={chatId}

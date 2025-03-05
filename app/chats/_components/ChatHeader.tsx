@@ -43,7 +43,7 @@ export const ChatHeader: FC<ChatHeaderProps> = ({
   return (
     <div
       className={cn(
-        "fixed flex items-center justify-between w-full h-20 top-0 bg-white dark:bg-slate-900 px-3 md:pr-10 space-x-3 x-30"
+        "fixed flex items-center justify-between w-full h-20 top-0 bg-slate-50 dark:bg-slate-900 px-3 md:pr-10 space-x-3 x-30"
       )}
       style={isDesktop ? { width: `calc(100% - ${sidebarWidth + 3}%)` } : {}}
     >
@@ -81,9 +81,9 @@ export const ChatHeader: FC<ChatHeaderProps> = ({
         </Sheet>
       </div>
 
-      <div className="flex items-center space-x-4">
-        <Video />
-        <Phone />
+      <div className="flex items-center space-x-6 px-4">
+        <Video width={24} height={24} />
+        <Phone width={20} height={20} />
       </div>
     </div>
   );

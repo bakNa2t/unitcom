@@ -56,7 +56,7 @@ export const ChatGroupSheet: FC<ChatGroupSheetProps> = ({
     api.conversation.deleteGroup
   );
 
-  const groupMessages = useQuery(api.conversation.getConversationMember, {
+  const groupMembers = useQuery(api.conversation.getConversationMember, {
     conversationId: chatId as Id<"conversations">,
   });
 
@@ -97,7 +97,9 @@ export const ChatGroupSheet: FC<ChatGroupSheetProps> = ({
   return (
     <ScrollArea className="h-full">
       <Avatar className="w-20 h-20 mx-auto mt-10">
-        <AvatarFallback className="md:text-3xl">{groupName[0]}</AvatarFallback>
+        <AvatarFallback className="md:text-3xl">
+          {groupName.slice(0, 2)}
+        </AvatarFallback>
       </Avatar>
 
       <SheetTitle className="text-2xl text-center mt-2">{groupName}</SheetTitle>
@@ -108,6 +110,28 @@ export const ChatGroupSheet: FC<ChatGroupSheetProps> = ({
       </div>
 
       <Separator className="my-5 border border-slate-200 dark:border-slate-800" />
+
+      <p className="font-bold text-lg">
+        {groupMembers?.members.length} members
+      </p>
+
+      <div>
+        {groupMembers?.members &&
+          groupMembers.members.map((member) => (
+            <div
+              key={member._id}
+              className="flex items-center justify-between space-x-3 my-3"
+            >
+              <div className="flex items-center space-x-3">
+                <Avatar>
+                  <AvatarImage src={member.imageUrl} />
+                  <AvatarFallback>{member.username[0]}</AvatarFallback>
+                </Avatar>
+                <p>{member.username}</p>
+              </div>
+            </div>
+          ))}
+      </div>
     </ScrollArea>
   );
 };

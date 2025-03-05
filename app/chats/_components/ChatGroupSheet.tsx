@@ -1,9 +1,8 @@
 import { FC, useState } from "react";
-import Link from "next/link";
 import { useQuery } from "convex/react";
 import { toast } from "sonner";
 import { ConvexError } from "convex/values";
-import { Phone, Trash2, Video } from "lucide-react";
+import { LogOut, Phone, Trash2, Video } from "lucide-react";
 
 import { ChatTypeContent } from "./ChatTypeContent";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -22,7 +21,6 @@ import {
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
-import { getFormattedToPluralize } from "@/lib/utils";
 
 type ActionButtonProps = {
   Icon: FC;
@@ -197,6 +195,52 @@ export const ChatGroupSheet: FC<ChatGroupSheetProps> = ({
           </div>
         </DialogContent>
       </Dialog>
+
+      <Separator className="my-5 border border-slate-200 dark:border-slate-800" />
+
+      <Dialog
+        open={leaveConfirmation}
+        onOpenChange={() => setLeaveConfirmation(!leaveConfirmation)}
+      >
+        <DialogTrigger
+          onClick={() => setLeaveConfirmation(true)}
+          className="w-full"
+        >
+          <div className="flex items-center justify-center w-full space-x-3 text-red-600">
+            <LogOut />
+            <p>Leave group</p>
+          </div>
+        </DialogTrigger>
+
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="mb-5">
+              Are you sure you want to leave{" "}
+              <span className="font-bold italic">{groupName}</span> group?
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="flex items-center justify-end space-x-3">
+            <Button
+              variant="link"
+              onClick={() => setLeaveConfirmation(false)}
+              disabled={leaveGroupState === "loading"}
+            >
+              Cancel
+            </Button>
+
+            <Button
+              variant="destructive"
+              onClick={handleLeaveGroup}
+              disabled={leaveGroupState === "loading"}
+            >
+              Leave
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Separator className="my-5 border border-slate-200 dark:border-slate-800" />
     </ScrollArea>
   );
 };

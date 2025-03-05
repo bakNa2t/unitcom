@@ -1,7 +1,9 @@
 import { FC, useState } from "react";
 import Link from "next/link";
 import { useQuery } from "convex/react";
-import { Ban, Phone, Video } from "lucide-react";
+import { toast } from "sonner";
+import { ConvexError } from "convex/values";
+import { Phone, Trash2, Video } from "lucide-react";
 
 import { ChatTypeContent } from "./ChatTypeContent";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -19,10 +21,8 @@ import {
 
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { getFormattedToPluralize } from "@/lib/utils";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
-import { toast } from "sonner";
-import { ConvexError } from "convex/values";
+import { getFormattedToPluralize } from "@/lib/utils";
 
 type ActionButtonProps = {
   Icon: FC;
@@ -153,6 +153,50 @@ export const ChatGroupSheet: FC<ChatGroupSheetProps> = ({
           <p>No shared media</p>
         )}
       </div>
+
+      <Separator className="my-5 border border-slate-200 dark:border-slate-800" />
+
+      <Dialog
+        open={deleteConfirmation}
+        onOpenChange={() => setDeleteConfirmation(!deleteConfirmation)}
+      >
+        <DialogTrigger
+          onClick={() => setDeleteConfirmation(true)}
+          className="w-full"
+        >
+          <div className="flex items-center justify-center w-full space-x-3 text-red-600">
+            <Trash2 />
+            <p>Delete group</p>
+          </div>
+        </DialogTrigger>
+
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="mb-5">
+              Are you sure you want to delete{" "}
+              <span className="font-bold italic">{groupName}</span> group?
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="flex items-center justify-end space-x-3">
+            <Button
+              variant="link"
+              onClick={() => setDeleteConfirmation(false)}
+              disabled={blockGroupState === "loading"}
+            >
+              Cancel
+            </Button>
+
+            <Button
+              variant="destructive"
+              onClick={handleDeleteGroup}
+              disabled={blockGroupState === "loading"}
+            >
+              Delete
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </ScrollArea>
   );
 };

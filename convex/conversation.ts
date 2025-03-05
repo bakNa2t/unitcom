@@ -162,7 +162,7 @@ export const deleteGroup = mutation({
       )
       .collect();
 
-    if (!memberships || memberships.length <= 1)
+    if (!memberships)
       throw new ConvexError("Cannot delete group with only one member");
 
     const messages = await ctx.db

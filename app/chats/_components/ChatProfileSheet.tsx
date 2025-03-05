@@ -1,6 +1,8 @@
 import { FC, useState } from "react";
 import Link from "next/link";
 import { useQuery } from "convex/react";
+import { toast } from "sonner";
+import { ConvexError } from "convex/values";
 import { Ban, Phone, Video } from "lucide-react";
 
 import { ChatTypeContent } from "./ChatTypeContent";
@@ -21,8 +23,6 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { getFormattedToPluralize } from "@/lib/utils";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
-import { toast } from "sonner";
-import { ConvexError } from "convex/values";
 
 type ActionButtonProps = {
   Icon: FC;
@@ -78,6 +78,7 @@ export const ChatProfileSheet: FC<ChatProfileSheetProps> = ({
       await blockContact({ conversationId: chatId });
 
       toast.success("Contact blocked successfully");
+      setBlockConfirmation(false);
     } catch (error) {
       console.log(error);
       toast.error(

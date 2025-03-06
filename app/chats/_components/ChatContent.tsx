@@ -24,7 +24,7 @@ export const ChatContent: FC<{ chatId: Id<"conversations"> }> = ({
       ? [conversation.otherMember]
       : [];
 
-  const { mutate: markAsReed, state } = useMutationHandler(
+  const { mutate: markAsReed } = useMutationHandler(
     api.conversation.markAsRead
   );
 
@@ -38,6 +38,17 @@ export const ChatContent: FC<{ chatId: Id<"conversations"> }> = ({
     if (seenUsers.length === 0) return undefined;
 
     return formatSeenBy(seenUsers);
+  };
+
+  const formatSeenBy = (seenUsers: (string | undefined)[]) => {
+    switch (seenUsers.length) {
+      case 1:
+        return `${seenUsers[0]} seen`;
+      case 2:
+        return `${seenUsers[0]} seen and ${seenUsers[1]} seen`;
+      default:
+        return `${(seenUsers[0], seenUsers[1])} and ${seenUsers.length - 2} others seen`;
+    }
   };
 
   if (!conversation) return null;

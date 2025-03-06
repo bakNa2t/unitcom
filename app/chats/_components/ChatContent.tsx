@@ -1,13 +1,13 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useQuery } from "convex/react";
 import { useUser } from "@clerk/clerk-react";
 
 import { ChatHeader } from "./ChatHeader";
+import { ChatMessageItem } from "./ChatMessageItem";
 
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
-import { ChatMessageItem } from "./ChatMessageItem";
 
 export const ChatContent: FC<{ chatId: Id<"conversations"> }> = ({
   chatId,
@@ -24,11 +24,17 @@ export const ChatContent: FC<{ chatId: Id<"conversations"> }> = ({
       ? [conversation.otherMember]
       : [];
 
-  const { mutate: markAsReed } = useMutationHandler(
+  const { mutate: markAsRead } = useMutationHandler(
     api.conversation.markAsRead
   );
 
   const { user } = useUser();
+
+  useEffect(() => {
+    if (messages && messages.length > 0) {
+      markAsRead({ conversationId: chatId, messageId: messages[0]._id });
+    }
+  }, [chatId, markAsRead, messages]);
 
   const getSeenMessage = (messageId: Id<"messages">) => {
     const seenUsers = members

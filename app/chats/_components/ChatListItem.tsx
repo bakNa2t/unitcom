@@ -31,7 +31,7 @@ export const ChatListItem: FC<ChatListItemProps> = ({
     <Link
       href={`/chats/${chatId}`}
       className={cn("flex justify-between p-3 rounded-2xl", {
-        "bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400":
+        "bg-slate-300 dark:bg-slate-900 text-gray-700 dark:text-gray-300":
           isActive,
       })}
     >

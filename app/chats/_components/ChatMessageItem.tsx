@@ -1,9 +1,11 @@
 import { FC, ReactNode } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { format } from "date-fns";
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 
 type ChatMessageItemProps = {
   createdAt: number;
@@ -16,7 +18,7 @@ type ChatMessageItemProps = {
   seen?: ReactNode;
 };
 
-export const ChatMessageItem: FC<ChatMessageItemProps> = (
+export const ChatMessageItem: FC<ChatMessageItemProps> = ({
   createdAt,
   fromCurrentUser,
   senderImage,
@@ -24,8 +26,8 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = (
   lastByUser,
   content,
   type,
-  seen
-) => {
+  seen,
+}) => {
   const formatTime = (timestamp: number) => format(timestamp, "HH:mm");
 
   return (
@@ -88,8 +90,32 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = (
               <p className="text-blue-700 underline">PDF Document</p>
             </Link>
           )}
+
+          <p
+            className={cn("text-xs flex w-full my-1", {
+              "text-primary-foreground justify-end": fromCurrentUser,
+              "text-secondary-foreground justify-end": !fromCurrentUser,
+              "dark:text-white text-black":
+                type === "audio" || type === "image" || type === "pdf",
+            })}
+          >
+            {formatTime(createdAt)}
+          </p>
         </div>
+
+        <span className="text-sm italic">{seen}</span>
       </div>
+
+      <Avatar
+        className={cn("w-8 h-8 relative", {
+          "order-2": fromCurrentUser,
+          "order-1": !fromCurrentUser,
+          invisible: lastByUser,
+        })}
+      >
+        <AvatarImage src={senderImage} alt={senderName} />
+        <AvatarFallback>{senderName.slice(0, 2)}</AvatarFallback>
+      </Avatar>
     </div>
   );
 };

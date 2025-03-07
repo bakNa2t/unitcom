@@ -1,12 +1,25 @@
 import { FC } from "react";
 import { useForm } from "react-hook-form";
+import { useTheme } from "next-themes";
 import { ConvexError } from "convex/values";
 import { toast } from "sonner";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Smile } from "lucide-react";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
+
+import { Form } from "@/components/ui/form";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 import { api } from "@/convex/_generated/api";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
+import { useIsDesktop } from "@/hooks/useIsDesktop";
+import { useSidebarWidth } from "@/hooks/useSidebarWidth";
 
 type ChatFooterProps = {
   chatId: string;
@@ -22,6 +35,10 @@ const ChatMessageSchema = z.object({
 export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
   const { mutate: createMessage, state: createMessageState } =
     useMutationHandler(api.message.create);
+
+  const isDesktop = useIsDesktop();
+  const { sidebarWidth } = useSidebarWidth();
+  const { resolvedTheme } = useTheme();
 
   const form = useForm<z.infer<typeof ChatMessageSchema>>({
     resolver: zodResolver(ChatMessageSchema),
@@ -45,5 +62,34 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
     }
   };
 
-  return <div>ChatFooter</div>;
+  return (
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(handleCreateMessage)}
+        style={isDesktop ? { width: `calc(100% - ${sidebarWidth + 3}%)` } : {}}
+        className="fixed bottom-0 flex items-center justify-between w-full h-20 space-x-3 px-3 md:pr-10 z-30 bg-white dark:bg-slate-900"
+      >
+        <Popover>
+          <PopoverTrigger>
+            <button type="submit">
+              <Smile size={20} />
+            </button>
+          </PopoverTrigger>
+
+          <PopoverContent className="w-fit p-0">
+            <Picker
+              theme={resolvedTheme}
+              data={data}
+              onEmojiSelect={(emoji: any) =>
+                form.setValue(
+                  "content",
+                  `${form.getValues("content")}${emoji.native}`
+                )
+              }
+            />
+          </PopoverContent>
+        </Popover>
+      </form>
+    </Form>
+  );
 };

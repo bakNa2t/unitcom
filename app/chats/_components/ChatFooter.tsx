@@ -5,7 +5,7 @@ import { ConvexError } from "convex/values";
 import { toast } from "sonner";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Smile } from "lucide-react";
+import { Send, Smile } from "lucide-react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import TextareaAutoSize from "react-textarea-autosize";
@@ -74,7 +74,7 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
       <form
         onSubmit={form.handleSubmit(handleCreateMessage)}
         style={isDesktop ? { width: `calc(100% - ${sidebarWidth + 3}%)` } : {}}
-        className="fixed bottom-0 flex items-center justify-between w-full h-20 space-x-3 px-3 md:pr-10 z-30 bg-slate-50 dark:bg-slate-900"
+        className="fixed bottom-0 flex items-center justify-between w-full h-20 space-x-3 px-3 md:pr-16 z-30 bg-slate-50 dark:bg-slate-900"
       >
         <Popover>
           <PopoverTrigger className="flex items-center">
@@ -121,6 +121,11 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
               </>
             </FormControl>
           )}
+        />
+
+        <Send
+          className="cursor-pointer"
+          onClick={async () => await form.handleSubmit(handleCreateMessage)()}
         />
       </form>
     </Form>

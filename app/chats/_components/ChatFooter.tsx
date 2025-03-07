@@ -8,8 +8,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Smile } from "lucide-react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
+import TextareaAutoSize from "react-textarea-autosize";
 
-import { Form } from "@/components/ui/form";
+import { Form, FormControl, FormField } from "@/components/ui/form";
 import {
   Popover,
   PopoverContent,
@@ -89,6 +90,30 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
             />
           </PopoverContent>
         </Popover>
+
+        <FormField
+          control={form.control}
+          name="content"
+          render={({ field }) => (
+            <FormControl>
+              <>
+                <TextareaAutoSize
+                  onKeyDown={async (e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      await form.handleSubmit(handleCreateMessage)();
+                    }
+                  }}
+                  rows={1}
+                  maxRows={2}
+                  disabled={createMessageState === "loading"}
+                  placeholder="Type a message"
+                  {...field}
+                />
+              </>
+            </FormControl>
+          )}
+        />
       </form>
     </Form>
   );

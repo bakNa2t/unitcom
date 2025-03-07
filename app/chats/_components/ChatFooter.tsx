@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { ChangeEvent, FC } from "react";
 import { useForm } from "react-hook-form";
 import { useTheme } from "next-themes";
 import { ConvexError } from "convex/values";
@@ -63,15 +63,21 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
     }
   };
 
+  const handleInputChange = async (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const { value, selectionStart } = e.target;
+
+    if (selectionStart !== null) form.setValue("content", value);
+  };
+
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleCreateMessage)}
         style={isDesktop ? { width: `calc(100% - ${sidebarWidth + 3}%)` } : {}}
-        className="fixed bottom-0 flex items-center justify-between w-full h-20 space-x-3 px-3 md:pr-10 z-30 bg-white dark:bg-slate-900"
+        className="fixed bottom-0 flex items-center justify-between w-full h-20 space-x-3 px-3 md:pr-10 z-30 bg-slate-50 dark:bg-slate-900"
       >
         <Popover>
-          <PopoverTrigger>
+          <PopoverTrigger className="flex items-center">
             <button type="submit">
               <Smile size={20} />
             </button>
@@ -104,10 +110,12 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
                       await form.handleSubmit(handleCreateMessage)();
                     }
                   }}
+                  onChange={handleInputChange}
                   rows={1}
                   maxRows={2}
                   disabled={createMessageState === "loading"}
                   placeholder="Type a message"
+                  className="flex-grow bg-slate-200 dark:bg-slate-800 rounded-2xl resize-none py-2 px-4 ring-0 focus:ring-0 focus:outline-none outline-none"
                   {...field}
                 />
               </>

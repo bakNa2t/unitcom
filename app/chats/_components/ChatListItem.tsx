@@ -41,23 +41,23 @@ export const ChatListItem: FC<ChatListItemProps> = ({
           <AvatarFallback>{name[0]}</AvatarFallback>
         </Avatar>
 
-        <div className="flex items-center space-y-1">
+        <div>
           <h2 className="font-bold text-sm">{name}</h2>
           <p className="text-sm text-gray-700 dark:text-gray-400">
             {lastMessageContent}
           </p>
         </div>
+      </div>
 
-        <div className="flex flex-col items-end justify-between">
-          <p className="text-sm text-muted-foreground">
-            {timestamp && getFormatedTimestamp(timestamp)}
-          </p>
-          {unseenMessageCount && unseenMessageCount > 0 ? (
-            <Badge variant="secondary" className="text-gray-500">
-              {unseenMessageCount}
-            </Badge>
-          ) : null}
-        </div>
+      <div className="flex flex-col items-end justify-between">
+        <p className="text-sm text-muted-foreground">
+          {timestamp && getFormatedTimestamp(timestamp)}
+        </p>
+        {unseenMessageCount && unseenMessageCount > 0 ? (
+          <Badge variant="secondary" className="text-gray-500">
+            {unseenMessageCount}
+          </Badge>
+        ) : null}
       </div>
     </Link>
   );

@@ -4,6 +4,7 @@ import { useUser } from "@clerk/clerk-react";
 
 import { ChatHeader } from "./ChatHeader";
 import { ChatMessageItem } from "./ChatMessageItem";
+import { ChatFooter } from "./ChatFooter";
 
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
@@ -75,7 +76,7 @@ export const ChatContent: FC<{ chatId: Id<"conversations"> }> = ({
         status={status}
       />
 
-      <div className="flex flex-col-reverse gap-2 p-3">
+      <div className="flex flex-1 flex-col-reverse gap-2 p-3">
         {messages?.map((message, index) => (
           <ChatMessageItem
             key={message._id}
@@ -92,6 +93,8 @@ export const ChatContent: FC<{ chatId: Id<"conversations"> }> = ({
           />
         ))}
       </div>
+
+      <ChatFooter chatId={chatId} currentUserId={user?.id} />
     </div>
   );
 };

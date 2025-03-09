@@ -32,7 +32,7 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
 
   return (
     <div
-      className={cn("flex flex-col w-full mx-2", {
+      className={cn("flex items-end", {
         "justify-end": fromCurrentUser,
       })}
     >
@@ -44,7 +44,7 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
       >
         <div
           className={cn(
-            "flex flex-col items-center justify-between py-1 space-x-2 rounded-lg max-w-[80%]",
+            "flex flex-col items-center justify-between py-1 px-3 space-x-2 rounded-lg max-w-[80%]",
             {
               "bg-blue-700 text-primary-foreground":
                 fromCurrentUser && type === "text",

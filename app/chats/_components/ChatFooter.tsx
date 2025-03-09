@@ -5,7 +5,7 @@ import { ConvexError } from "convex/values";
 import { toast } from "sonner";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Send, Smile } from "lucide-react";
+import { Paperclip, Send, Smile } from "lucide-react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import TextareaAutoSize from "react-textarea-autosize";
@@ -49,6 +49,8 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
   const handleCreateMessage = async ({
     content,
   }: z.infer<typeof ChatMessageSchema>) => {
+    if (!content || content.length < 1) return;
+
     try {
       await createMessage({
         conversationId: chatId,
@@ -118,6 +120,7 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
                   className="flex-grow bg-slate-200 dark:bg-slate-800 rounded-2xl resize-none py-2 px-4 ring-0 focus:ring-0 focus:outline-none outline-none"
                   {...field}
                 />
+                <Paperclip size={20} className="cursor-pointer" />
               </>
             </FormControl>
           )}

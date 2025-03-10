@@ -9,6 +9,7 @@ import { Paperclip, Send, Smile } from "lucide-react";
 import { FilePond, registerPlugin } from "react-filepond";
 import { v4 as uuid } from "uuid";
 import { client as supabase } from "@/lib/supabase/client";
+import { AudioRecorder } from "react-audio-voice-recorder";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import TextareaAutoSize from "react-textarea-autosize";
@@ -156,6 +157,8 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
     }
   };
 
+  const handleAudioUpload = async () => {};
+
   return (
     <Form {...form}>
       <form
@@ -226,7 +229,7 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
           </DialogTrigger>
 
           <DialogContent className="min-w-80">
-            <DialogHeader>
+            <DialogHeader className="flex flex-col space-y-1.5 items-center justify-center">
               <DialogTitle>Upload PDF / IMG</DialogTitle>
               <DialogDescription>🗂 Upload</DialogDescription>
             </DialogHeader>
@@ -253,6 +256,17 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+
+        {isDesktop && (
+          <AudioRecorder
+            onRecordingComplete={() => {}}
+            audioTrackConstraints={{
+              noiseSuppression: true,
+              echoCancellation: true,
+            }}
+            downloadFileExtension="webm"
+          />
+        )}
       </form>
     </Form>
   );

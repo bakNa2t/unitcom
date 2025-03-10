@@ -6,9 +6,12 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Paperclip, Send, Smile } from "lucide-react";
+import { FilePond, registerPlugin } from "react-filepond";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import TextareaAutoSize from "react-textarea-autosize";
+import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 
 import { Form, FormControl, FormField } from "@/components/ui/form";
 import {
@@ -30,6 +33,9 @@ import { useMutationHandler } from "@/hooks/useMutationHandler";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
 import { useSidebarWidth } from "@/hooks/useSidebarWidth";
 
+import "filepond/dist/filepond.min.css";
+import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
+
 type ChatFooterProps = {
   chatId: string;
   currentUserId?: string;
@@ -44,7 +50,7 @@ const ChatMessageSchema = z.object({
 export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
   // const [typing, setTyping] = useState(false);
   // const [isTyping, setIsTyping] = useState(false);
-  // const [isFileImageOrPdf, setIsFileImageOrPdf] = useState(false);
+  const [isFileImageOrPdf, setIsFileImageOrPdf] = useState<Blob | null>(null);
   // const [isFileSend, setIsFileSend] = useState(false);
   const [isFileImageOrPdfModalOpen, setIsFileImageOrPdfModalOpen] =
     useState(false);
@@ -55,6 +61,8 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
   const isDesktop = useIsDesktop();
   const { sidebarWidth } = useSidebarWidth();
   const { resolvedTheme } = useTheme();
+
+  registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateType);
 
   const form = useForm<z.infer<typeof ChatMessageSchema>>({
     resolver: zodResolver(ChatMessageSchema),
@@ -160,6 +168,17 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
               <DialogTitle>Upload PDF / IMG</DialogTitle>
               <DialogDescription>🗂 Upload</DialogDescription>
             </DialogHeader>
+
+            <FilePond
+              className="cursor-pointer"
+              files={isFileImageOrPdf ? [isFileImageOrPdf] : []}
+              allowMultiple={false}
+              acceptedFileTypes={["image/*", "application/pdf"]}
+              labelIdle="Drag & Drop your files or <span class='filepond--label-action'>Browse</span>"
+              onupdatefiles={(fileItems) => {
+                setIsFileImageOrPdf(fileItems[0]?.file ?? null);
+              }}
+            />
           </DialogContent>
         </Dialog>
       </form>

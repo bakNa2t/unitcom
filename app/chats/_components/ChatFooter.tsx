@@ -23,6 +23,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -35,6 +36,7 @@ import { useSidebarWidth } from "@/hooks/useSidebarWidth";
 
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
+import { Button } from "@/components/ui/button";
 
 type ChatFooterProps = {
   chatId: string;
@@ -51,7 +53,7 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
   // const [typing, setTyping] = useState(false);
   // const [isTyping, setIsTyping] = useState(false);
   const [isFileImageOrPdf, setIsFileImageOrPdf] = useState<Blob | null>(null);
-  // const [isFileSend, setIsFileSend] = useState(false);
+  const [isFileSend, setIsFileSend] = useState(false);
   const [isFileImageOrPdfModalOpen, setIsFileImageOrPdfModalOpen] =
     useState(false);
 
@@ -179,6 +181,12 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
                 setIsFileImageOrPdf(fileItems[0]?.file ?? null);
               }}
             />
+
+            <DialogFooter>
+              <Button type="button" onClick={() => {}} disabled={isFileSend}>
+                Send
+              </Button>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
       </form>

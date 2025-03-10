@@ -7,6 +7,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Paperclip, Send, Smile } from "lucide-react";
 import { FilePond, registerPlugin } from "react-filepond";
+import { v4 as uuid } from "uuid";
+import { client as supabase } from "@/lib/supabase/client";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import TextareaAutoSize from "react-textarea-autosize";
@@ -52,7 +54,7 @@ const ChatMessageSchema = z.object({
 export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
   // const [typing, setTyping] = useState(false);
   // const [isTyping, setIsTyping] = useState(false);
-  const [isFileImageOrPdf, setIsFileImageOrPdf] = useState<Blob | null>(null);
+  const [fileImageOrPdf, setFileImageOrPdf] = useState<Blob | null>(null);
   const [isFileSend, setIsFileSend] = useState(false);
   const [isFileImageOrPdfModalOpen, setIsFileImageOrPdfModalOpen] =
     useState(false);
@@ -94,6 +96,64 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
     const { value, selectionStart } = e.target;
 
     if (selectionStart !== null) form.setValue("content", value);
+  };
+
+  const handleImageUpload = async () => {
+    const uniqeId = uuid();
+
+    if (!fileImageOrPdf) return;
+
+    setIsFileSend(true);
+
+    try {
+      let fileName;
+
+      if (fileImageOrPdf.type.startsWith("image/")) {
+        fileName = `chat/image-${uniqeId}.jpg`;
+      } else if (fileImageOrPdf.type.startsWith("application/pdf")) {
+        fileName = `chat/pdf-${uniqeId}.pdf`;
+      } else {
+        console.error("Invalid file type");
+        setIsFileSend(false);
+        return;
+      }
+
+      const file = new File([fileImageOrPdf], fileName, {
+        type: fileImageOrPdf.type,
+      });
+
+      const { data, error } = await supabase.storage
+        .from("unitcom-files")
+        .upload(fileName, file, {
+          cacheControl: "3600",
+          upsert: false,
+        });
+
+      if (error) {
+        console.log("Error uploading file to Supabase storage:", error.message);
+        setIsFileSend(false);
+        return;
+      }
+
+      const {
+        data: { publicUrl },
+      } = await supabase.storage.from("unitcom-files").getPublicUrl(data.path);
+
+      await createMessage({
+        conversationId: chatId,
+        type: fileImageOrPdf.type.startsWith("image/") ? "image" : "pdf",
+        content: [publicUrl],
+      });
+
+      setIsFileSend(false);
+      setIsFileImageOrPdfModalOpen(false);
+    } catch (error) {
+      setIsFileSend(false);
+      setIsFileImageOrPdfModalOpen(false);
+
+      console.log(error);
+      toast.error("Failed to upload image. Please try later");
+    }
   };
 
   return (
@@ -173,17 +233,21 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
 
             <FilePond
               className="cursor-pointer"
-              files={isFileImageOrPdf ? [isFileImageOrPdf] : []}
+              files={fileImageOrPdf ? [fileImageOrPdf] : []}
               allowMultiple={false}
               acceptedFileTypes={["image/*", "application/pdf"]}
               labelIdle="Drag & Drop your files or <span class='filepond--label-action'>Browse</span>"
               onupdatefiles={(fileItems) => {
-                setIsFileImageOrPdf(fileItems[0]?.file ?? null);
+                setFileImageOrPdf(fileItems[0]?.file ?? null);
               }}
             />
 
             <DialogFooter>
-              <Button type="button" onClick={() => {}} disabled={isFileSend}>
+              <Button
+                type="button"
+                onClick={handleImageUpload}
+                disabled={isFileSend}
+              >
                 Send
               </Button>
             </DialogFooter>

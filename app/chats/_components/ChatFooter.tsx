@@ -1,4 +1,4 @@
-import { ChangeEvent, FC } from "react";
+import { ChangeEvent, FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTheme } from "next-themes";
 import { ConvexError } from "convex/values";
@@ -16,6 +16,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 import { api } from "@/convex/_generated/api";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
@@ -34,6 +42,13 @@ const ChatMessageSchema = z.object({
 });
 
 export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
+  // const [typing, setTyping] = useState(false);
+  // const [isTyping, setIsTyping] = useState(false);
+  // const [isFileImageOrPdf, setIsFileImageOrPdf] = useState(false);
+  // const [isFileSend, setIsFileSend] = useState(false);
+  const [isFileImageOrPdfModalOpen, setIsFileImageOrPdfModalOpen] =
+    useState(false);
+
   const { mutate: createMessage, state: createMessageState } =
     useMutationHandler(api.message.create);
 
@@ -120,7 +135,6 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
                   className="flex-grow bg-slate-200 dark:bg-slate-800 rounded-2xl resize-none py-2 px-4 ring-0 focus:ring-0 focus:outline-none outline-none"
                   {...field}
                 />
-                <Paperclip size={20} className="cursor-pointer" />
               </>
             </FormControl>
           )}
@@ -130,6 +144,24 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
           className="cursor-pointer"
           onClick={async () => await form.handleSubmit(handleCreateMessage)()}
         />
+
+        <Dialog
+          open={isFileImageOrPdfModalOpen}
+          onOpenChange={() =>
+            setIsFileImageOrPdfModalOpen(!isFileImageOrPdfModalOpen)
+          }
+        >
+          <DialogTrigger>
+            <Paperclip size={20} className="cursor-pointer" />
+          </DialogTrigger>
+
+          <DialogContent className="min-w-80">
+            <DialogHeader>
+              <DialogTitle>Upload PDF / IMG</DialogTitle>
+              <DialogDescription>🗂 Upload</DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
       </form>
     </Form>
   );

@@ -157,7 +157,43 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
     }
   };
 
-  const handleAudioUpload = async () => {};
+  const handleAudioUpload = async (blob: Blob) => {
+    try {
+      const uniqeId = uuid();
+
+      const file = new File([blob], "audio.webm", { type: blob.type });
+      const fileName = `chat/audio-${uniqeId}`;
+
+      const { data, error } = await supabase.storage
+        .from("unitcom-files")
+        .upload(fileName, file, {
+          cacheControl: "3600",
+          upsert: false,
+        });
+
+      if (error) {
+        console.log(
+          "Error uploading audio to Supabase storage:",
+          error.message
+        );
+        toast.error("Failed to upload audio. Please try later");
+        return;
+      }
+
+      const {
+        data: { publicUrl },
+      } = await supabase.storage.from("unitcom-files").getPublicUrl(data.path);
+
+      await createMessage({
+        conversationId: chatId,
+        type: "audio",
+        content: [publicUrl],
+      });
+    } catch (error) {
+      console.log("Failed to upload audio", error);
+      toast.error("Failed to upload audio. Please try later");
+    }
+  };
 
   return (
     <Form {...form}>
@@ -259,7 +295,7 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
 
         {isDesktop && (
           <AudioRecorder
-            onRecordingComplete={() => {}}
+            onRecordingComplete={handleAudioUpload}
             audioTrackConstraints={{
               noiseSuppression: true,
               echoCancellation: true,

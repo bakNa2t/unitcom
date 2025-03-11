@@ -16,6 +16,7 @@ import TextareaAutoSize from "react-textarea-autosize";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import Pusher from "pusher-js";
+import axios from "axios";
 
 import { Form, FormControl, FormField } from "@/components/ui/form";
 import {
@@ -54,7 +55,7 @@ const ChatMessageSchema = z.object({
 });
 
 export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
-  // const [typing, setTyping] = useState(false);
+  const [typing, setTyping] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [fileImageOrPdf, setFileImageOrPdf] = useState<Blob | null>(null);
   const [isFileSend, setIsFileSend] = useState(false);
@@ -116,6 +117,24 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
     const { value, selectionStart } = e.target;
 
     if (selectionStart !== null) form.setValue("content", value);
+
+    if (!typing) {
+      setTyping(true);
+      await axios.post("/api/type-indicator", {
+        channelId: chatId,
+        event: "typing",
+        data: { isTyping: true, userId: currentUserId },
+      });
+    }
+
+    setTimeout(() => {
+      setTyping(true);
+      axios.post("/api/type-indicator", {
+        channelId: chatId,
+        event: "typing",
+        data: { isTyping: false, userId: currentUserId },
+      });
+    }, 2000);
   };
 
   const handleImageUpload = async () => {
@@ -263,6 +282,11 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
                   className="flex-grow bg-slate-200 dark:bg-slate-800 rounded-2xl resize-none py-2 px-4 ring-0 focus:ring-0 focus:outline-none outline-none"
                   {...field}
                 />
+                {isTyping && (
+                  <p className="text-xs text-slate-800 dark:text-slate-300 ml-1">
+                    typing...
+                  </p>
+                )}
               </>
             </FormControl>
           )}

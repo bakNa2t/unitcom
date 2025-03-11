@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTheme } from "next-themes";
 import { ConvexError } from "convex/values";
@@ -15,6 +15,7 @@ import Picker from "@emoji-mart/react";
 import TextareaAutoSize from "react-textarea-autosize";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+import Pusher from "pusher-js";
 
 import { Form, FormControl, FormField } from "@/components/ui/form";
 import {
@@ -54,7 +55,7 @@ const ChatMessageSchema = z.object({
 
 export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
   // const [typing, setTyping] = useState(false);
-  // const [isTyping, setIsTyping] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const [fileImageOrPdf, setFileImageOrPdf] = useState<Blob | null>(null);
   const [isFileSend, setIsFileSend] = useState(false);
   const [isFileImageOrPdfModalOpen, setIsFileImageOrPdfModalOpen] =
@@ -73,6 +74,24 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
     resolver: zodResolver(ChatMessageSchema),
     defaultValues: { content: "" },
   });
+
+  useEffect(() => {
+    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
+      cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
+    });
+
+    const channel = pusher.subscribe(chatId);
+
+    channel.bind("typing", (data: { isTyping: boolean; userId: string }) => {
+      if (data.userId !== currentUserId) {
+        setIsTyping(data.isTyping);
+      }
+    });
+
+    return () => {
+      pusher.unsubscribe(chatId);
+    };
+  }, [chatId, currentUserId]);
 
   const handleCreateMessage = async ({
     content,

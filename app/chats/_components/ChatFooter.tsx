@@ -121,20 +121,20 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
     if (!typing) {
       setTyping(true);
       await axios.post("/api/type-indicator", {
-        channelId: chatId,
+        channel: chatId,
         event: "typing",
         data: { isTyping: true, userId: currentUserId },
       });
-    }
 
-    setTimeout(() => {
-      setTyping(true);
-      axios.post("/api/type-indicator", {
-        channelId: chatId,
-        event: "typing",
-        data: { isTyping: false, userId: currentUserId },
-      });
-    }, 2000);
+      setTimeout(() => {
+        setTyping(true);
+        axios.post("/api/type-indicator", {
+          channel: chatId,
+          event: "typing",
+          data: { isTyping: false, userId: currentUserId },
+        });
+      }, 2000);
+    }
   };
 
   const handleImageUpload = async () => {
@@ -274,13 +274,13 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
                       await form.handleSubmit(handleCreateMessage)();
                     }
                   }}
-                  onChange={handleInputChange}
                   rows={1}
                   maxRows={2}
+                  {...field}
                   disabled={createMessageState === "loading"}
                   placeholder="Type a message"
+                  onChange={handleInputChange}
                   className="flex-grow bg-slate-200 dark:bg-slate-800 rounded-2xl resize-none py-2 px-4 ring-0 focus:ring-0 focus:outline-none outline-none"
-                  {...field}
                 />
                 {isTyping && (
                   <p className="text-xs text-slate-800 dark:text-slate-300 ml-1">

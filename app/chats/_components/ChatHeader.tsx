@@ -2,8 +2,9 @@
 
 import { FC } from "react";
 import { useQuery } from "convex/react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChevronLeft, Phone, Video } from "lucide-react";
+import Link from "next/link";
 
 import { ChatProfileSheet } from "./ChatProfileSheet";
 import { ChatGroupSheet } from "./ChatGroupSheet";
@@ -31,6 +32,7 @@ export const ChatHeader: FC<ChatHeaderProps> = ({
   status,
   isGroup,
 }) => {
+  const router = useRouter();
   const isDesktop = useIsDesktop();
   const { sidebarWidth } = useSidebarWidth();
 
@@ -39,6 +41,10 @@ export const ChatHeader: FC<ChatHeaderProps> = ({
   const groupsInCommon = conversations?.filter(
     ({ conversation }) => conversation.isGroup
   );
+
+  const handleVideoOrPhoneCall = () => {
+    router.push(`/calls/${chatId}`);
+  };
 
   return (
     <div
@@ -82,8 +88,18 @@ export const ChatHeader: FC<ChatHeaderProps> = ({
       </div>
 
       <div className="flex items-center space-x-6 px-4">
-        <Video width={24} height={24} />
-        <Phone width={20} height={20} />
+        <Video
+          width={24}
+          height={24}
+          className="cursor-pointer"
+          onClick={handleVideoOrPhoneCall}
+        />
+        <Phone
+          width={20}
+          height={20}
+          className="cursor-pointer"
+          onClick={handleVideoOrPhoneCall}
+        />
       </div>
     </div>
   );

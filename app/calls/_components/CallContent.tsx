@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { v4 as uuid } from "uuid";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { RefreshCcw } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 export const CallContent = () => {
   const [meetingCode, setMeetingCode] = useState("");
@@ -16,7 +19,22 @@ export const CallContent = () => {
               <p className="mt-2 text-muted-foreground">
                 Share this code with your friends so they can join the call
               </p>
+
+              <Button onClick={() => {}}>
+                Generate code
+                <RefreshCcw className="ml-2" />
+              </Button>
             </div>
+          </div>
+
+          <div className="flex flex-col gap-y-5">
+            <Input
+              type="text"
+              placeholder="Input meeting link"
+              onChange={(e) => setMeetingCode(e.target.value)}
+              className="h-14"
+            />
+            <Button className="w-full h-14">Join meeting</Button>
           </div>
         </div>
       </div>

@@ -1,35 +1,40 @@
 import { FC, useEffect, useState } from "react";
-import { Track } from "livekit-client";
+import { useUser } from "@clerk/clerk-react";
 
 import {
-  ControlBar,
-  GridLayout,
   LiveKitRoom,
-  ParticipantTile,
   RoomAudioRenderer,
-  useTracks,
+  VideoConference,
 } from "@livekit/components-react";
 
 import "@livekit/components-styles";
 
 export const MeetingRoom: FC<{ chatId: string }> = ({ chatId }) => {
-  const name = "quickstart-user";
   const [token, setToken] = useState("");
+  const { user } = useUser();
+
+  const email = user?.emailAddresses[0].emailAddress;
 
   useEffect(() => {
     (async () => {
       try {
-        const resp = await fetch(`/api/token?room=${chatId}&username=${name}`);
+        const resp = await fetch(
+          `/api/livekit?room=${chatId}&username=${email}`
+        );
         const data = await resp.json();
         setToken(data.token);
       } catch (e) {
         console.error(e);
       }
     })();
-  }, []);
+  }, [chatId, email]);
+
+  console.log(token);
 
   if (token === "") {
-    return <div>Getting token...</div>;
+    return (
+      <div className="flex items-center justify-center">Getting token...</div>
+    );
   }
 
   return (
@@ -37,40 +42,13 @@ export const MeetingRoom: FC<{ chatId: string }> = ({ chatId }) => {
       video={true}
       audio={true}
       token={token}
+      connect={true}
       serverUrl={process.env.LIVEKIT_URL}
-      // Use the default LiveKit theme for nice styles.
       data-lk-theme="default"
       style={{ height: "100dvh" }}
     >
-      {/* Your custom component with basic video conferencing functionality. */}
-      <MyVideoConference />
-      {/* The RoomAudioRenderer takes care of room-wide audio for you. */}
+      <VideoConference />
       <RoomAudioRenderer />
-      {/* Controls for the user to start/stop audio, video, and screen
-      share tracks and to leave the room. */}
-      <ControlBar />
     </LiveKitRoom>
   );
 };
-
-function MyVideoConference() {
-  // `useTracks` returns all camera and screen share tracks. If a user
-  // joins without a published camera track, a placeholder track is returned.
-  const tracks = useTracks(
-    [
-      { source: Track.Source.Camera, withPlaceholder: true },
-      { source: Track.Source.ScreenShare, withPlaceholder: false },
-    ],
-    { onlySubscribed: false }
-  );
-  return (
-    <GridLayout
-      tracks={tracks}
-      style={{ height: "calc(100vh - var(--lk-control-bar-height))" }}
-    >
-      {/* The GridLayout accepts zero or one child. The child is used
-      as a template to render all passed in tracks. */}
-      <ParticipantTile />
-    </GridLayout>
-  );
-}

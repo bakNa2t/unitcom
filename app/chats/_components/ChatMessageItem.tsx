@@ -70,7 +70,7 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
           className={cn(
             "relative flex flex-col items-center justify-between py-1 px-3 space-x-2 rounded-lg max-w-[80%] group",
             {
-              "bg-blue-700 text-primary-foreground":
+              "bg-blue-400/80 dark:bg-blue-700/80 text-primary":
                 fromCurrentUser && type === "text",
               "bg-secondary text-secondary-foreground":
                 !fromCurrentUser && type === "text",
@@ -123,12 +123,14 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
 
           {type === "pdf" && (
             <Link href={content[0]} target="_blank" rel="noopener noreferrer">
-              <p className="text-blue-700 underline">PDF Document</p>
+              <p className="text-blue-700 dark:text-blue-400 underline">
+                PDF Document
+              </p>
             </Link>
           )}
 
           <p
-            className={cn("text-xs flex w-full my-1", {
+            className={cn("text-[8px] flex w-full my-1", {
               "text-primary-foreground justify-end": fromCurrentUser,
               "text-secondary-foreground justify-end": !fromCurrentUser,
               "dark:text-white text-black":

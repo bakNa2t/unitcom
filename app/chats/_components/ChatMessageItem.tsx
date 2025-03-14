@@ -4,8 +4,10 @@ import Image from "next/image";
 import { format } from "date-fns";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
+import { Trash2 } from "lucide-react";
 
 type ChatMessageItemProps = {
   createdAt: number;
@@ -44,7 +46,7 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
       >
         <div
           className={cn(
-            "flex flex-col items-center justify-between py-1 px-3 space-x-2 rounded-lg max-w-[80%]",
+            "relative flex flex-col items-center justify-between py-1 px-3 space-x-2 rounded-lg max-w-[80%] group",
             {
               "bg-blue-700 text-primary-foreground":
                 fromCurrentUser && type === "text",
@@ -56,13 +58,22 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
           )}
         >
           {type === "text" && (
-            <p className="text-wrap break-words whitespace-pre-wrap break-all">
-              {content}
-            </p>
+            <>
+              <Button
+                size="sm"
+                variant="ghost"
+                className="absolute top-0 -right-11 items-center opacity-0 group-hover:opacity-100 cursor-pointer"
+              >
+                <Trash2 width={18} height={18} />
+              </Button>
+              <p className="text-wrap break-words whitespace-pre-wrap break-all">
+                {content}
+              </p>
+            </>
           )}
 
           {type === "audio" && (
-            <audio className="max-w-44 md:max-w-full" controls>
+            <audio className="max-w-64 md:max-w-full" controls>
               <source src={content[0]} type="audio/mpeg" />
               Your browser does not support the audio element.
             </audio>

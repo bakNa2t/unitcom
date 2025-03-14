@@ -59,13 +59,15 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
         >
           {type === "text" && (
             <>
-              <Button
-                size="sm"
-                variant="ghost"
-                className="absolute top-0 -right-11 items-center opacity-0 group-hover:opacity-100 cursor-pointer"
-              >
-                <Trash2 width={18} height={18} />
-              </Button>
+              {fromCurrentUser && (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="absolute top-0 -right-11 items-center opacity-0 group-hover:opacity-100 cursor-pointer"
+                >
+                  <Trash2 width={18} height={18} />
+                </Button>
+              )}
               <p className="text-wrap break-words whitespace-pre-wrap break-all">
                 {content}
               </p>

@@ -1,12 +1,21 @@
 import { useState } from "react";
 import { v4 as uuid } from "uuid";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import { RefreshCcw } from "lucide-react";
+import { toast } from "sonner";
+import Image from "next/image";
+
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export const CallContent = () => {
   const [meetingCode, setMeetingCode] = useState("");
+
+  const generateMeetingLink = () => {
+    const code = uuid();
+
+    navigator.clipboard.writeText(code);
+    toast.success("Link copied to clipboard");
+  };
 
   return (
     <div className="grid md:grid-cols-2 p-2 md:p-10 gap-10 w-full place-content-center">
@@ -20,7 +29,7 @@ export const CallContent = () => {
                 Share this code with your friends so they can join the call
               </p>
 
-              <Button onClick={() => {}}>
+              <Button onClick={generateMeetingLink} className="md:mt-2">
                 Generate code
                 <RefreshCcw className="ml-2" />
               </Button>
@@ -34,7 +43,9 @@ export const CallContent = () => {
               onChange={(e) => setMeetingCode(e.target.value)}
               className="h-14"
             />
-            <Button className="w-full h-14">Join meeting</Button>
+            <Button className="w-full h-14" disabled={!meetingCode.length}>
+              Join meeting
+            </Button>
           </div>
         </div>
       </div>

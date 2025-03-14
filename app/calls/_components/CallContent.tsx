@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { v4 as uuid } from "uuid";
 import { RefreshCcw } from "lucide-react";
 import { toast } from "sonner";
@@ -8,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export const CallContent = () => {
+  const router = useRouter();
   const [meetingCode, setMeetingCode] = useState("");
 
   const generateMeetingLink = () => {
@@ -16,6 +18,8 @@ export const CallContent = () => {
     navigator.clipboard.writeText(code);
     toast.success("Link copied to clipboard");
   };
+
+  const joinMeeting = () => router.push(`/calls/${meetingCode}`);
 
   return (
     <div className="grid md:grid-cols-2 p-2 md:p-10 gap-10 w-full place-content-center">
@@ -43,7 +47,11 @@ export const CallContent = () => {
               onChange={(e) => setMeetingCode(e.target.value)}
               className="h-14"
             />
-            <Button className="w-full h-14" disabled={!meetingCode.length}>
+            <Button
+              onClick={joinMeeting}
+              className="w-full h-14"
+              disabled={!meetingCode.length}
+            >
               Join meeting
             </Button>
           </div>

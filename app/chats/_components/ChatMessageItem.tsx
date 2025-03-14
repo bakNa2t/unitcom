@@ -8,6 +8,15 @@ import { Trash2 } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 import { cn } from "@/lib/utils";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
@@ -82,14 +91,30 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
           {type === "text" && (
             <>
               {fromCurrentUser && (
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={handleDeleteMessage}
-                  className="absolute top-0 -right-11 items-center opacity-0 group-hover:opacity-100 cursor-pointer"
-                >
-                  <Trash2 width={18} height={18} />
-                </Button>
+                <Dialog>
+                  <DialogTrigger className="absolute top-0 -right-6 items-center opacity-0 group-hover:opacity-100 cursor-pointer">
+                    <Trash2 width={16} height={16} />
+                  </DialogTrigger>
+
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Are you sure?</DialogTitle>
+                    </DialogHeader>
+                    <DialogDescription>
+                      This message will be deleted permanently
+                    </DialogDescription>
+                    <DialogFooter>
+                      <Button variant="outline">Cancel</Button>
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        onClick={handleDeleteMessage}
+                      >
+                        Delete
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               )}
               <p className="text-wrap break-words whitespace-pre-wrap break-all">
                 {content}

@@ -1,13 +1,17 @@
 import { FC, ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { ConvexError } from "convex/values";
+import { toast } from "sonner";
 import { format } from "date-fns";
+import { Trash2 } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
-import { Trash2 } from "lucide-react";
+import { useMutationHandler } from "@/hooks/useMutationHandler";
+import { api } from "@/convex/_generated/api";
 
 type ChatMessageItemProps = {
   createdAt: number;
@@ -18,6 +22,7 @@ type ChatMessageItemProps = {
   content: string[];
   type: string;
   seen?: ReactNode;
+  messageId: string;
 };
 
 export const ChatMessageItem: FC<ChatMessageItemProps> = ({
@@ -29,7 +34,24 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
   content,
   type,
   seen,
+  messageId,
 }) => {
+  const { mutate: deleteMessage } = useMutationHandler(
+    api.message.deleteMessage
+  );
+
+  const handleDeleteMessage = async () => {
+    try {
+      await deleteMessage({ messageId });
+      toast.success("Message deleted successfully");
+    } catch (error) {
+      console.log("Error deleting message", error);
+      toast.error(
+        error instanceof ConvexError ? error.data : "An error occurred"
+      );
+    }
+  };
+
   const formatTime = (timestamp: number) => format(timestamp, "HH:mm");
 
   return (
@@ -63,6 +85,7 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
                 <Button
                   size="sm"
                   variant="ghost"
+                  onClick={handleDeleteMessage}
                   className="absolute top-0 -right-11 items-center opacity-0 group-hover:opacity-100 cursor-pointer"
                 >
                   <Trash2 width={18} height={18} />

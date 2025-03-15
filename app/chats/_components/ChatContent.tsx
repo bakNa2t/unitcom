@@ -90,6 +90,7 @@ export const ChatContent: FC<{ chatId: Id<"conversations"> }> = ({
             seen={
               message.isCurrentUser ? getSeenMessage(message._id) : undefined
             }
+            messageId={message._id}
           />
         ))}
       </div>

@@ -1,4 +1,4 @@
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ConvexError } from "convex/values";
@@ -45,6 +45,8 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
   seen,
   messageId,
 }) => {
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
   const { mutate: deleteMessage } = useMutationHandler(
     api.message.deleteMessage
   );
@@ -53,6 +55,7 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
     try {
       await deleteMessage({ messageId });
       toast.success("Message deleted successfully");
+      setOpenDeleteModal(false);
     } catch (error) {
       console.log("Error deleting message", error);
       toast.error(
@@ -91,7 +94,10 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
           {type === "text" && (
             <>
               {fromCurrentUser && (
-                <Dialog>
+                <Dialog
+                  open={openDeleteModal}
+                  onOpenChange={() => setOpenDeleteModal(!openDeleteModal)}
+                >
                   <DialogTrigger className="absolute top-0 -right-6 items-center opacity-0 group-hover:opacity-100 cursor-pointer">
                     <Trash2 width={16} height={16} />
                   </DialogTrigger>
@@ -104,7 +110,12 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
                       This message will be deleted permanently
                     </DialogDescription>
                     <DialogFooter>
-                      <Button variant="outline">Cancel</Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => setOpenDeleteModal(false)}
+                      >
+                        Cancel
+                      </Button>
                       <Button
                         type="button"
                         variant="destructive"

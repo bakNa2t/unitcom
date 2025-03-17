@@ -79,6 +79,8 @@ export const ChatProfileSheet: FC<ChatProfileSheetProps> = ({
 
   const chatFiles = messages?.filter(({ type }) => type !== "file");
 
+  console.log(chatFiles);
+
   const handleBlockContact = async () => {
     try {
       await blockContact({ conversationId: chatId });
@@ -169,11 +171,16 @@ export const ChatProfileSheet: FC<ChatProfileSheetProps> = ({
         {chatFiles?.length ? (
           <ScrollArea className="max-w-80 rounded-md border">
             <div className="flex space-x-4 p-4">
-              {chatFiles?.map(({ _id, type, content }) => (
-                <div key={_id} className="w-[200px] rounded-xl overflow-hidden">
-                  <ChatTypeContent type={type} content={content} />
-                </div>
-              ))}
+              {chatFiles
+                ?.filter(({ type }) => type !== "text")
+                .map(({ _id, type, content }) => (
+                  <div
+                    key={_id}
+                    className="w-[200px] rounded-xl overflow-hidden"
+                  >
+                    <ChatTypeContent type={type} content={content} />
+                  </div>
+                ))}
             </div>
 
             <ScrollBar orientation="horizontal" />

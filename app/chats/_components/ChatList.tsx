@@ -60,6 +60,7 @@ export const ChatList: FC = () => {
                     lastMessageSender={lastMessage?.lastMessageSender}
                     timestamp={lastMessage?.lastMessageTimestamp}
                     unseenMessageCount={unseenCount}
+                    isGroup={conversation.isGroup}
                   />
                 )
               )

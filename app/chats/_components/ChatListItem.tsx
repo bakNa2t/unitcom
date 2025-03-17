@@ -15,17 +15,18 @@ type ChatListItemProps = {
   isActive: boolean;
   chatId: string;
   unseenMessageCount: number | undefined;
+  isGroup?: boolean;
 };
 
 export const ChatListItem: FC<ChatListItemProps> = ({
   name,
   lastMessageContent,
-  //   lastMessageSender,
   timestamp,
   avatarUrl,
   isActive,
   chatId,
   unseenMessageCount,
+  isGroup,
 }) => {
   return (
     <Link
@@ -46,6 +47,11 @@ export const ChatListItem: FC<ChatListItemProps> = ({
           <p className="text-sm text-gray-700 dark:text-gray-400">
             {lastMessageContent}
           </p>
+          {isGroup && (
+            <p className="text-[10px] text-muted-foreground italic">
+              Chat group
+            </p>
+          )}
         </div>
       </div>
 

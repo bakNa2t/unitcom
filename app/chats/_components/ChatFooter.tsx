@@ -310,7 +310,7 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
           <DialogContent className="min-w-80">
             <DialogHeader className="flex flex-col space-y-1.5 items-center justify-center">
               <DialogTitle>Upload PDF / IMG</DialogTitle>
-              <DialogDescription>🗂 Upload</DialogDescription>
+              <DialogDescription>📂 Upload</DialogDescription>
             </DialogHeader>
 
             <FilePond

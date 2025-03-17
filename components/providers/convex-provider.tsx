@@ -36,9 +36,9 @@ export const ConvexClientProvider = ({ children }: { children: ReactNode }) => {
                   <CardTitle>Sign in to start messaging</CardTitle>
                 </CardHeader>
                 <CardContent className="flex justify-center">
-                  <Button className="w-full bg-slate-600">
-                    <SignInButton>Sign In</SignInButton>
-                  </Button>
+                  <SignInButton mode="modal">
+                    <Button className="w-full bg-slate-600">Sign In</Button>
+                  </SignInButton>
                 </CardContent>
               </Card>
             </div>

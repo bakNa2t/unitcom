@@ -1,9 +1,10 @@
 import { FC, useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useQuery } from "convex/react";
 import { toast } from "sonner";
 import { ConvexError } from "convex/values";
 import { Ban, Phone, Video } from "lucide-react";
+import Link from "next/link";
 
 import { ChatTypeContent } from "./ChatTypeContent";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -27,10 +28,14 @@ import { useMutationHandler } from "@/hooks/useMutationHandler";
 type ActionButtonProps = {
   Icon: FC;
   label: string;
+  onClick?: () => void;
 };
 
-const ActionButton: FC<ActionButtonProps> = ({ Icon, label }) => (
-  <div className="flex flex-col items-center w-fit space-y-2 px-4 py-2 rounded-xl bg-slate-200 dark:bg-slate-800">
+const ActionButton: FC<ActionButtonProps> = ({ Icon, label, onClick }) => (
+  <div
+    className="flex flex-col items-center w-fit space-y-2 px-4 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 cursor-pointer"
+    onClick={onClick}
+  >
     <Icon />
     <p className="text-sm">{label}</p>
   </div>
@@ -61,6 +66,7 @@ export const ChatProfileSheet: FC<ChatProfileSheetProps> = ({
   groupsInCommon,
   chatAvatar,
 }) => {
+  const router = useRouter();
   const [blockConfirmation, setBlockConfirmation] = useState(false);
 
   const messages = useQuery(api.messages.get, {
@@ -87,6 +93,10 @@ export const ChatProfileSheet: FC<ChatProfileSheetProps> = ({
     }
   };
 
+  const handleVideoOrPhoneCall = () => {
+    router.push(`/calls/${chatId}`);
+  };
+
   return (
     <ScrollArea className="h-full">
       <Avatar className="w-20 h-20 mx-auto mt-10">
@@ -98,8 +108,16 @@ export const ChatProfileSheet: FC<ChatProfileSheetProps> = ({
       <p className="text-center">{status}</p>
 
       <div className="flex justify-center space-x-4 mt-5">
-        <ActionButton Icon={Video} label="Video" />
-        <ActionButton Icon={Phone} label="Call" />
+        <ActionButton
+          Icon={Video}
+          label="Video"
+          onClick={handleVideoOrPhoneCall}
+        />
+        <ActionButton
+          Icon={Phone}
+          label="Call"
+          onClick={handleVideoOrPhoneCall}
+        />
       </div>
 
       <Separator className="my-5 border border-slate-200 dark:border-slate-800" />

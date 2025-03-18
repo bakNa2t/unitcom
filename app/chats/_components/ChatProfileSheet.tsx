@@ -79,8 +79,6 @@ export const ChatProfileSheet: FC<ChatProfileSheetProps> = ({
 
   const chatFiles = messages?.filter(({ type }) => type !== "file");
 
-  console.log(chatFiles);
-
   const handleBlockContact = async () => {
     try {
       await blockContact({ conversationId: chatId });

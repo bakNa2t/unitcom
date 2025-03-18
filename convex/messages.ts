@@ -1,6 +1,6 @@
 import { ConvexError, v } from "convex/values";
 import { query } from "./_generated/server";
-import { getUserDataById } from "./_utils/utils";
+import { getUserDataById } from "./_utils";
 
 export const get = query({
   args: {

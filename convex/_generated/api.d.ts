@@ -24,7 +24,7 @@ import type * as message from "../message.js";
 import type * as messages from "../messages.js";
 import type * as status from "../status.js";
 import type * as user from "../user.js";
-import type * as _utils_utils from "../_utils/utils.js";
+import type * as _utils from "../_utils.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -46,7 +46,7 @@ declare const fullApi: ApiFromModules<{
   messages: typeof messages;
   status: typeof status;
   user: typeof user;
-  "_utils/utils": typeof _utils_utils;
+  _utils: typeof _utils;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

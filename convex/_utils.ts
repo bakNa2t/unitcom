@@ -1,10 +1,10 @@
-import { QueryCtx } from "../_generated/server";
+import { MutationCtx, QueryCtx } from "./_generated/server";
 
 export const getUserDataById = async ({
   ctx,
   clerkId,
 }: {
-  ctx: QueryCtx;
+  ctx: QueryCtx | MutationCtx;
   clerkId: string;
 }) =>
   ctx.db

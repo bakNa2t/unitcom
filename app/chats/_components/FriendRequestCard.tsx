@@ -4,12 +4,12 @@ import { Handshake, X } from "lucide-react";
 import { toast } from "sonner";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 
 import { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
-import { Switch } from "@/components/ui/switch";
-import { Button } from "@/components/ui/button";
 
 type FriendRequestCardProps = {
   id: Id<"friend_requests">;
@@ -28,6 +28,8 @@ export const FriendRequestCard: FC<FriendRequestCardProps> = ({
     useMutationHandler(api.friend_request.accept);
   const { mutate: declineRequest, state: declineRequestState } =
     useMutationHandler(api.friend_request.decline);
+
+  const name = username !== "null null" ? username : "Unknown User";
 
   const handleDenyRequest = async (id: string) => {
     try {
@@ -59,12 +61,12 @@ export const FriendRequestCard: FC<FriendRequestCardProps> = ({
         <Handshake />
         <Avatar>
           <AvatarImage src={imageUrl} />
-          <AvatarFallback>{username.slice(0, 1)}</AvatarFallback>
+          <AvatarFallback>{name.slice(0, 1)}</AvatarFallback>
         </Avatar>
 
         <div className="flex items-center justify-between">
           <div className="flex-1 space-y-1">
-            <p className="text-sm font-medium leading-none">{username}</p>
+            <p className="text-sm font-medium leading-none">{name}</p>
             <p className="text-sm text-muted-foreground">{email}</p>
           </div>
         </div>

@@ -70,6 +70,11 @@ const ProfileDialogContent = () => {
     api.status.update
   );
 
+  const name =
+    userDetails?.username !== "null null"
+      ? userDetails?.username
+      : "Unknown User";
+
   const form = useForm<z.infer<typeof requestFriendFormSchema>>({
     resolver: zodResolver(requestFriendFormSchema),
     defaultValues: {
@@ -117,7 +122,7 @@ const ProfileDialogContent = () => {
         <div>
           <Avatar className="w-16 h-16 mx-auto">
             <AvatarImage src={userDetails?.imageUrl} />
-            <AvatarFallback>{userDetails?.username[0]}</AvatarFallback>
+            <AvatarFallback>{name?.[0]}</AvatarFallback>
           </Avatar>
         </div>
       </Card>
@@ -126,7 +131,7 @@ const ProfileDialogContent = () => {
         <div className="flex items-center space-x-4">
           <UserRound />
           <Input
-            value={userDetails?.username}
+            value={name}
             placeholder="Name"
             disabled
             className="border-none outline-none ring-0"

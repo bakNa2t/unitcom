@@ -48,7 +48,7 @@ type ChatFooterProps = {
   currentUserId?: string;
 };
 
-const ChatMessageSchema = z.object({
+export const ChatMessageSchema = z.object({
   content: z.string().min(1, {
     message: "Message must not be empty",
   }),

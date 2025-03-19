@@ -1,6 +1,9 @@
 import { FC, ReactNode } from "react";
-import { ScrollArea } from "../../../components/ui/scroll-area";
+import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 type SidebarContainerProps = {
   children: ReactNode;
@@ -13,11 +16,21 @@ export const SidebarContainer: FC<SidebarContainerProps> = ({
   title,
   trigger,
 }) => {
+  const router = useRouter();
+
+  const handleRouteToChats = () => router.push("/chats");
+
   return (
     <ScrollArea className="h-full">
       <div className="px-4">
         <div className="flex items-center justify-between mt-10">
-          <h2 className="text-2xl font-bold">{title}</h2>
+          <Button
+            variant="ghost"
+            onClick={handleRouteToChats}
+            className="text-2xl font-bold"
+          >
+            {title}
+          </Button>
           <div>{trigger}</div>
         </div>
 

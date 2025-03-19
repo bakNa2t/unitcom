@@ -68,3 +68,30 @@ export const deleteMessage = mutation({
     return true;
   },
 });
+
+export const editMessage = mutation({
+  args: {
+    messageId: v.id("messages"),
+    content: v.array(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) throw new ConvexError("Not authenticated");
+
+    const currentUser = await getUserDataById({
+      ctx,
+      clerkId: identity.subject,
+    });
+
+    if (!currentUser) throw new ConvexError("User not found");
+
+    const message = await ctx.db.get(args.messageId);
+
+    if (!message) throw new ConvexError("Message not found");
+
+    await ctx.db.patch(args.messageId, { content: args.content });
+
+    return true;
+  },
+});

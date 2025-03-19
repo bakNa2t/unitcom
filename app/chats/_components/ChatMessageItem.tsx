@@ -1,10 +1,13 @@
 import { FC, ReactNode, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { z } from "zod";
 import { ConvexError } from "convex/values";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import { Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -17,10 +20,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Form, FormControl, FormField } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 import { cn } from "@/lib/utils";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
 import { api } from "@/convex/_generated/api";
+import { ChatMessageSchema } from "./ChatFooter";
 
 type ChatMessageItemProps = {
   createdAt: number;
@@ -50,6 +61,11 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
   const { mutate: deleteMessage } = useMutationHandler(
     api.message.deleteMessage
   );
+
+  const form = useForm<z.infer<typeof ChatMessageSchema>>({
+    resolver: zodResolver(ChatMessageSchema),
+    defaultValues: { content: content[0] },
+  });
 
   const handleDeleteMessage = async () => {
     try {
@@ -94,38 +110,72 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
           {type === "text" && (
             <>
               {fromCurrentUser && (
-                <Dialog
-                  open={openDeleteModal}
-                  onOpenChange={() => setOpenDeleteModal(!openDeleteModal)}
-                >
-                  <DialogTrigger className="absolute top-0 -right-6 items-center opacity-0 group-hover:opacity-100 cursor-pointer">
-                    <Trash2 width={16} height={16} />
-                  </DialogTrigger>
+                <>
+                  <Dialog
+                    open={openDeleteModal}
+                    onOpenChange={() => setOpenDeleteModal(!openDeleteModal)}
+                  >
+                    <DialogTrigger className="absolute top-0 -right-6 items-center opacity-0 group-hover:opacity-100 cursor-pointer">
+                      <Trash2 width={16} height={16} />
+                    </DialogTrigger>
 
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Are you sure?</DialogTitle>
-                    </DialogHeader>
-                    <DialogDescription>
-                      This message will be deleted permanently
-                    </DialogDescription>
-                    <DialogFooter>
-                      <Button
-                        variant="outline"
-                        onClick={() => setOpenDeleteModal(false)}
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="destructive"
-                        onClick={handleDeleteMessage}
-                      >
-                        Delete
-                      </Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Are you sure?</DialogTitle>
+                      </DialogHeader>
+                      <DialogDescription>
+                        This message will be deleted permanently
+                      </DialogDescription>
+                      <DialogFooter>
+                        <Button
+                          variant="outline"
+                          onClick={() => setOpenDeleteModal(false)}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          onClick={handleDeleteMessage}
+                        >
+                          Delete
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+
+                  <Popover>
+                    <PopoverTrigger>
+                      <Pencil
+                        width={16}
+                        height={16}
+                        className="absolute top-8 -right-6 items-center opacity-0 group-hover:opacity-100 cursor-pointer"
+                      />
+                    </PopoverTrigger>
+
+                    <PopoverContent className="fixed -top-20 -right-14 w-80">
+                      <Form {...form}>
+                        <form onSubmit={() => console.log("Edit message")}>
+                          <FormField
+                            control={form.control}
+                            name="content"
+                            render={({ field }) => (
+                              <FormControl>
+                                <Input
+                                  {...field}
+                                  value={form.watch("content")}
+                                  onChange={(e) =>
+                                    form.setValue("content", e.target.value)
+                                  }
+                                />
+                              </FormControl>
+                            )}
+                          />
+                        </form>
+                      </Form>
+                    </PopoverContent>
+                  </Popover>
+                </>
               )}
               <p className="text-wrap break-words whitespace-pre-wrap break-all">
                 {content}

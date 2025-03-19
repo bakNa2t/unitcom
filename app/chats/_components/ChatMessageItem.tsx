@@ -5,7 +5,7 @@ import { z } from "zod";
 import { ConvexError } from "convex/values";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Save, Trash2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -153,9 +153,12 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
                       />
                     </PopoverTrigger>
 
-                    <PopoverContent className="fixed -top-20 -right-14 w-80">
+                    <PopoverContent className="fixed -top-20 -right-14 w-80 bg-slate-100 dark:bg-slate-950">
                       <Form {...form}>
-                        <form onSubmit={() => console.log("Edit message")}>
+                        <form
+                          onSubmit={() => console.log("Edit message")}
+                          className="flex items-center gap-4"
+                        >
                           <FormField
                             control={form.control}
                             name="content"
@@ -167,9 +170,17 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
                                   onChange={(e) =>
                                     form.setValue("content", e.target.value)
                                   }
+                                  className="flex-grow bg-slate-200 dark:bg-slate-800 rounded-2xl py-2 px-4 ring-0 focus:ring-0 focus:outline-none outline-none"
                                 />
                               </FormControl>
                             )}
+                          />
+
+                          <Save
+                            className="cursor-pointer"
+                            onClick={() => {
+                              console.log(form.watch("content"));
+                            }}
                           />
                         </form>
                       </Form>

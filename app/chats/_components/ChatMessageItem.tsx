@@ -20,11 +20,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Form, FormControl, FormField } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
@@ -164,7 +159,61 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
                     </DialogContent>
                   </Dialog>
 
-                  <Popover
+                  <Dialog
+                    open={showEditModal}
+                    onOpenChange={() => setShowEditModal(!showEditModal)}
+                  >
+                    <DialogTrigger>
+                      <Pencil
+                        width={16}
+                        height={16}
+                        className="absolute top-8 -right-6 items-center opacity-0 group-hover:opacity-100 cursor-pointer"
+                      />
+                    </DialogTrigger>
+
+                    <DialogContent className="w-72 md:w-96 bg-slate-100 dark:bg-slate-950">
+                      <DialogHeader>
+                        <DialogTitle>Edit Message</DialogTitle>
+                      </DialogHeader>
+
+                      <Form {...form}>
+                        <form
+                          onSubmit={form.handleSubmit(handleEditMessage)}
+                          className="flex items-center gap-4"
+                        >
+                          <FormField
+                            control={form.control}
+                            name="content"
+                            render={({ field }) => (
+                              <FormControl>
+                                <Input
+                                  {...field}
+                                  value={form.watch("content")}
+                                  onKeyDown={async (e) => {
+                                    if (e.key === "Enter" && !e.shiftKey) {
+                                      e.preventDefault();
+                                      await form.handleSubmit(
+                                        handleEditMessage
+                                      )();
+                                    }
+                                  }}
+                                  className="flex-grow bg-slate-200 dark:bg-slate-800 rounded-2xl py-2 px-4 ring-0 focus:ring-0 focus:outline-none outline-none"
+                                />
+                              </FormControl>
+                            )}
+                          />
+
+                          <Save
+                            className="cursor-pointer"
+                            onClick={async () =>
+                              await form.handleSubmit(handleEditMessage)()
+                            }
+                          />
+                        </form>
+                      </Form>
+                    </DialogContent>
+                  </Dialog>
+                  {/* <Popover
                     open={showEditModal}
                     onOpenChange={() => setShowEditModal(!showEditModal)}
                   >
@@ -213,7 +262,7 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
                         </form>
                       </Form>
                     </PopoverContent>
-                  </Popover>
+                  </Popover> */}
                 </>
               )}
               <p className="text-wrap break-words whitespace-pre-wrap break-all">

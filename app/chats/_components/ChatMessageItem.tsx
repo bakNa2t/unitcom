@@ -174,7 +174,6 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
                     <PopoverContent className="fixed -top-20 -right-14 w-80 bg-slate-100 dark:bg-slate-950">
                       <Form {...form}>
                         <form
-                          // onSubmit={() => console.log("Edit message")}
                           onSubmit={form.handleSubmit(handleEditMessage)}
                           className="flex items-center gap-4"
                         >
@@ -200,7 +199,12 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
                             )}
                           />
 
-                          <Save className="cursor-pointer" onClick={() => {}} />
+                          <Save
+                            className="cursor-pointer"
+                            onClick={async () =>
+                              await form.handleSubmit(handleEditMessage)()
+                            }
+                          />
                         </form>
                       </Form>
                     </PopoverContent>

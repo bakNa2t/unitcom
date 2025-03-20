@@ -57,6 +57,7 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
   messageId,
 }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   const { mutate: deleteMessage } = useMutationHandler(
     api.message.deleteMessage
@@ -90,6 +91,7 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
     try {
       await editMessage({ messageId, content: [form.getValues("content")] });
       toast.success("Message edited successfully");
+      setShowEditModal(false);
     } catch (error) {
       console.log("Error editing message", error);
       toast.error(
@@ -162,7 +164,10 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
                     </DialogContent>
                   </Dialog>
 
-                  <Popover>
+                  <Popover
+                    open={showEditModal}
+                    onOpenChange={() => setShowEditModal(!showEditModal)}
+                  >
                     <PopoverTrigger>
                       <Pencil
                         width={16}
@@ -171,7 +176,7 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
                       />
                     </PopoverTrigger>
 
-                    <PopoverContent className="fixed -top-20 -right-14 w-80 bg-slate-100 dark:bg-slate-950">
+                    <PopoverContent className="absolute -top-20 -right-14 w-80 bg-slate-100 dark:bg-slate-950">
                       <Form {...form}>
                         <form
                           onSubmit={form.handleSubmit(handleEditMessage)}

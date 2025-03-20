@@ -62,6 +62,8 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
     api.message.deleteMessage
   );
 
+  const { mutate: editMessage } = useMutationHandler(api.message.editMessage);
+
   const form = useForm<z.infer<typeof ChatMessageSchema>>({
     resolver: zodResolver(ChatMessageSchema),
     defaultValues: { content: content[0] },
@@ -74,6 +76,22 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
       setOpenDeleteModal(false);
     } catch (error) {
       console.log("Error deleting message", error);
+      toast.error(
+        error instanceof ConvexError ? error.data : "An error occurred"
+      );
+    }
+  };
+
+  const handleEditMessage = async ({
+    content,
+  }: z.infer<typeof ChatMessageSchema>) => {
+    if (!content || content.length < 1) return;
+
+    try {
+      await editMessage({ messageId, content: [form.getValues("content")] });
+      toast.success("Message edited successfully");
+    } catch (error) {
+      console.log("Error editing message", error);
       toast.error(
         error instanceof ConvexError ? error.data : "An error occurred"
       );
@@ -156,7 +174,8 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
                     <PopoverContent className="fixed -top-20 -right-14 w-80 bg-slate-100 dark:bg-slate-950">
                       <Form {...form}>
                         <form
-                          onSubmit={() => console.log("Edit message")}
+                          // onSubmit={() => console.log("Edit message")}
+                          onSubmit={form.handleSubmit(handleEditMessage)}
                           className="flex items-center gap-4"
                         >
                           <FormField
@@ -167,21 +186,21 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
                                 <Input
                                   {...field}
                                   value={form.watch("content")}
-                                  onChange={(e) =>
-                                    form.setValue("content", e.target.value)
-                                  }
+                                  onKeyDown={async (e) => {
+                                    if (e.key === "Enter" && !e.shiftKey) {
+                                      e.preventDefault();
+                                      await form.handleSubmit(
+                                        handleEditMessage
+                                      )();
+                                    }
+                                  }}
                                   className="flex-grow bg-slate-200 dark:bg-slate-800 rounded-2xl py-2 px-4 ring-0 focus:ring-0 focus:outline-none outline-none"
                                 />
                               </FormControl>
                             )}
                           />
 
-                          <Save
-                            className="cursor-pointer"
-                            onClick={() => {
-                              console.log(form.watch("content"));
-                            }}
-                          />
+                          <Save className="cursor-pointer" onClick={() => {}} />
                         </form>
                       </Form>
                     </PopoverContent>

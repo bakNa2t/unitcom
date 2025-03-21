@@ -23,7 +23,7 @@ const config: Config = {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
-          main: "#22D3EE",
+          main: "oklch(0.792 0.209 151.711)",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",

@@ -46,7 +46,7 @@ export const SharedBlock: FC<SharedBlockProps> = ({
           className="border-r border-r-indigo-950 dark:border-r-primary-main"
         />
 
-        <ResizablePanel className="!overflow-y-auto flex items-center">
+        <ResizablePanel className="!overflow-y-auto my-60 2xl:my-[30rem]">
           <div className="hidden md:block"></div>
           {children}
         </ResizablePanel>

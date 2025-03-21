@@ -43,10 +43,10 @@ export const SharedBlock: FC<SharedBlockProps> = ({
 
         <ResizableHandle
           withHandle
-          className="border-r border-r-gray-400 dark:border-r-gray-800"
+          className="border-r border-r-indigo-950 dark:border-r-primary-main"
         />
 
-        <ResizablePanel className="!overflow-y-auto my-20">
+        <ResizablePanel className="!overflow-y-auto flex items-center">
           <div className="hidden md:block"></div>
           {children}
         </ResizablePanel>

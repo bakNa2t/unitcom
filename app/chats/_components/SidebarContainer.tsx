@@ -27,11 +27,13 @@ export const SidebarContainer: FC<SidebarContainerProps> = ({
           <Button
             variant="ghost"
             onClick={handleRouteToChats}
-            className="text-2xl font-bold"
+            className="text-2xl font-bold text-indigo-950 dark:text-primary-main transition duration-300"
           >
             {title}
           </Button>
-          <div>{trigger}</div>
+          <div className="hover:cursor-pointer p-2 hover:bg-primary-main hover:text-indigo-950 duration-300 rounded-lg">
+            {trigger}
+          </div>
         </div>
 
         <div className="flex items-center my-4 h-8 p-2 bg-gray-200 dark:bg-gray-800 rounded-xl">

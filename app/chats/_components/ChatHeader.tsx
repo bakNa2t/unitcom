@@ -49,13 +49,18 @@ export const ChatHeader: FC<ChatHeaderProps> = ({
   return (
     <div
       className={cn(
-        "fixed flex items-center justify-between w-full h-20 top-0 bg-slate-50 dark:bg-slate-900 px-3 md:pr-10 space-x-3 z-9999"
+        "fixed flex items-center justify-between w-full h-20 top-0 bg-teal-50 dark:bg-slate-900 px-3 md:pr-10 space-x-3 z-10"
       )}
       style={isDesktop ? { width: `calc(100% - ${sidebarWidth + 3}%)` } : {}}
     >
       <div className="flex space-x-3">
         <div className="md:hidden">
-          <Button variant="outline" size="icon" asChild>
+          <Button
+            variant="outline"
+            size="icon"
+            asChild
+            className="bg-slate-200 dark:bg-slate-800 hover:text-slate-900 hover:bg-primary-main dark:hover:bg-primary-main transition"
+          >
             <Link href="/chats">
               <ChevronLeft />
             </Link>

@@ -4,6 +4,11 @@ import { Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type SidebarContainerProps = {
   children: ReactNode;
@@ -32,7 +37,15 @@ export const SidebarContainer: FC<SidebarContainerProps> = ({
             {title}
           </Button>
           <div className="hover:cursor-pointer p-2 hover:bg-primary-main hover:text-indigo-950 duration-300 rounded-lg">
-            {trigger}
+            <Tooltip>
+              <TooltipTrigger>{trigger}</TooltipTrigger>
+              <TooltipContent
+                side="right"
+                className="bg-gray-500 dark:bg-gray-700 rounded-xl ml-4"
+              >
+                <p>Create group</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
         </div>
 

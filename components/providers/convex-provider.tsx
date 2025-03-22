@@ -8,7 +8,7 @@ import {
   ConvexReactClient,
   Unauthenticated,
 } from "convex/react";
-import { FaSignalMessenger } from "react-icons/fa6";
+import Image from "next/image";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -24,8 +24,14 @@ export const ConvexClientProvider = ({ children }: { children: ReactNode }) => {
         <Authenticated>{children}</Authenticated>
         <Unauthenticated>
           <div className="grid place-content-center bg-slate-900 w-svw h-dvh">
-            <div className="flex flex-col items-center space-y-4">
-              <FaSignalMessenger size={100} className="text-primary-main " />
+            <div className="flex flex-col items-center space-y-8">
+              <Image
+                src="/logo-title-dark.svg"
+                width="400"
+                height="150"
+                alt="logo-title"
+                className="dark:hidden"
+              />
 
               <h1 className="text-4xl font-bold text-primary-main">
                 Welcome to Unitcom!

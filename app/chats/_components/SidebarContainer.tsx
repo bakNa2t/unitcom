@@ -41,7 +41,7 @@ export const SidebarContainer: FC<SidebarContainerProps> = ({
               <TooltipTrigger>{trigger}</TooltipTrigger>
               <TooltipContent
                 side="right"
-                className="bg-gray-500 dark:bg-gray-700 rounded-xl ml-4"
+                className="bg-primary-main text-indigo-900 rounded-xl ml-4"
               >
                 <p>Create group</p>
               </TooltipContent>

@@ -116,13 +116,13 @@ const ProfileDialogContent = () => {
 
   return (
     <div>
-      <Card className="flex flex-col space-y-4 border-0">
+      <Card className="flex flex-col space-y-4 border-0 shadow-none">
         <CardTitle>Profile Details</CardTitle>
 
         <div>
           <Avatar className="w-16 h-16 mx-auto">
             <AvatarImage src={userDetails?.imageUrl} />
-            <AvatarFallback>{name?.[0]}</AvatarFallback>
+            <AvatarFallback className="md:text-2xl">{name?.[0]}</AvatarFallback>
           </Avatar>
         </div>
       </Card>

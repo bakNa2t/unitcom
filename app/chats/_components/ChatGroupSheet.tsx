@@ -100,7 +100,17 @@ export const ChatGroupSheet: FC<ChatGroupSheetProps> = ({
         </AvatarFallback>
       </Avatar>
 
-      <SheetTitle className="text-2xl text-center mt-2">{groupName}</SheetTitle>
+      <SheetTitle className="text-2xl text-center mt-2">
+        <Dialog>
+          <DialogTrigger>{groupName}</DialogTrigger>
+
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Edit Group Name</DialogTitle>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+      </SheetTitle>
 
       <div className="flex justify-center space-x-4 mt-5">
         <ActionButton Icon={Video} label="Video" />

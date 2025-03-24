@@ -42,7 +42,7 @@ export const NavigationBar: FC<NavigationBarProps> = ({ trigger }) => {
 
   return (
     <>
-      <div className="flex md:flex-col items-center justify-between bottom-0 md:top-0 left-0 md:w-24 w-full md:h-screen h-20 bg-white dark:bg-slate-950 border-r md:border-r-indigo-950 md:dark:border-r-primary-main py-5 fixed z-10 ">
+      <div className="flex md:flex-col items-center justify-between bottom-0 md:top-0 left-0 md:w-24 w-full md:h-screen h-20 bg-teal-50 md:bg-gray-50 dark:bg-slate-900 border-r md:border-r-indigo-950 md:dark:border-r-primary-main py-5 fixed z-10 ">
         <div className="md:pt-2 flex flex-col items-center gap-9">
           <div className="hidden md:block">
             <Image
@@ -116,7 +116,7 @@ export const NavigationBar: FC<NavigationBarProps> = ({ trigger }) => {
         </div>
       </div>
 
-      <div className="md:hidden fixed flex justify-between items-center w-svw top-0 left-0 h-20 z-10 px-10 bg-white dark:bg-slate-900">
+      <div className="md:hidden fixed flex justify-between items-center w-svw top-0 left-0 h-20 z-10 px-10 bg-teal-50 dark:bg-slate-900">
         <NavigationMenu orientation="horizontal">
           <NavigationMenuList>
             <NavigationMenuItem>

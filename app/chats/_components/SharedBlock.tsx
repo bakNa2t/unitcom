@@ -1,12 +1,15 @@
 "use client";
 
 import { FC, ReactNode, useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+
+import { cn } from "@/lib/utils";
 import { useSidebarWidth } from "@/hooks/useSidebarWidth";
 
 type SharedBlockProps = {
@@ -22,6 +25,7 @@ export const SharedBlock: FC<SharedBlockProps> = ({
 }) => {
   const [isRendered, setIsRendered] = useState(false);
   const { sidebarWidth, setSidebarWidth } = useSidebarWidth();
+  const pathname = usePathname();
 
   useEffect(() => {
     setIsRendered(true);
@@ -46,7 +50,12 @@ export const SharedBlock: FC<SharedBlockProps> = ({
           className="border-r border-r-indigo-950 dark:border-r-primary-main"
         />
 
-        <ResizablePanel className="!overflow-y-auto my-60 2xl:my-[30rem]">
+        <ResizablePanel
+          className={cn(
+            "!overflow-y-auto",
+            pathname === "/chats" ? "my-60 2xl:my-[30rem]" : "my-20"
+          )}
+        >
           <div className="hidden md:block"></div>
           {children}
         </ResizablePanel>

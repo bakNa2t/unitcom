@@ -212,6 +212,7 @@ export const ChatNewGroup = () => {
                 <Button
                   type="submit"
                   disabled={createChatGroupState === "loading"}
+                  className="bg-primary-main hover:text-primary-main transition"
                 >
                   Create group
                 </Button>

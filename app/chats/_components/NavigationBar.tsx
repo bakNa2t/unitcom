@@ -43,22 +43,24 @@ export const NavigationBar: FC<NavigationBarProps> = ({ trigger }) => {
   return (
     <>
       <div className="flex md:flex-col items-center justify-between bottom-0 md:top-0 left-0 md:w-24 w-full md:h-screen h-20 bg-white dark:bg-slate-950 border-r md:border-r-indigo-950 md:dark:border-r-primary-main py-5 fixed z-10 ">
-        <Image
-          src="/logo-light.svg"
-          width="20"
-          height="20"
-          alt="logo"
-          className="dark:hidden"
-        />
-        <Image
-          src="/logo-dark.svg"
-          width="20"
-          height="20"
-          alt="logo"
-          className="hidden dark:block"
-        />
+        <div className="md:pt-2 flex flex-col items-center gap-9">
+          <div className="hidden md:block">
+            <Image
+              src="/logo-light.svg"
+              width="28"
+              height="28"
+              alt="logo"
+              className="dark:hidden"
+            />
+            <Image
+              src="/logo-dark.svg"
+              width="28"
+              height="28"
+              alt="logo"
+              className="hidden dark:block"
+            />
+          </div>
 
-        <div className="md:pt-10">
           <NavigationMenu orientation="vertical">
             <NavigationMenuList className="flex md:flex-col items-center justify-between !w-svw md:!w-fit px-5 md:px-0 md:space-y-4">
               {menuItems.map(({ icon: Icon, label, path }) => {

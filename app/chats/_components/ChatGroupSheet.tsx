@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { useQuery } from "convex/react";
 import { toast } from "sonner";
 import { ConvexError } from "convex/values";
-import { LogOut, Phone, Trash2, Video } from "lucide-react";
+import { LogOut, Pencil, Phone, Trash2, Video } from "lucide-react";
 
 import { ChatTypeContent } from "./ChatTypeContent";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -100,9 +100,16 @@ export const ChatGroupSheet: FC<ChatGroupSheetProps> = ({
         </AvatarFallback>
       </Avatar>
 
-      <SheetTitle className="text-2xl text-center mt-2">
+      <SheetTitle className="flex justify-center text-2xl mt-4 group">
         <Dialog>
-          <DialogTrigger>{groupName}</DialogTrigger>
+          <DialogTrigger className="flex items-center gap-2 transition">
+            {groupName}
+            <Pencil
+              width={16}
+              height={16}
+              className="opacity-0 group-hover:opacity-100 cursor-pointer"
+            />
+          </DialogTrigger>
 
           <DialogContent>
             <DialogHeader>

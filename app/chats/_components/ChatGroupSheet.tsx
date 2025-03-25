@@ -54,6 +54,10 @@ export const ChatGroupSheet: FC<ChatGroupSheetProps> = ({
     api.conversation.deleteGroup
   );
 
+  const { mutate: editGroupName } = useMutationHandler(
+    api.conversation.editGroupName
+  );
+
   const groupMembers = useQuery(api.conversation.getConversationMember, {
     conversationId: chatId as Id<"conversations">,
   });
@@ -84,6 +88,18 @@ export const ChatGroupSheet: FC<ChatGroupSheetProps> = ({
 
       toast.success("Group left successfully");
       setLeaveConfirmation(false);
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        error instanceof ConvexError ? error.data : "An error occured"
+      );
+    }
+  };
+
+  const handleEditGroupName = async (name: string) => {
+    try {
+      await editGroupName({ conversationId: chatId, name });
+      toast.success("Group name updated successfully");
     } catch (error) {
       console.log(error);
       toast.error(

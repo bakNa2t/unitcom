@@ -2,7 +2,10 @@ import { FC, useState } from "react";
 import { useQuery } from "convex/react";
 import { toast } from "sonner";
 import { ConvexError } from "convex/values";
-import { LogOut, Pencil, Phone, Trash2, Video } from "lucide-react";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { LogOut, Pencil, Phone, Save, Trash2, Video } from "lucide-react";
 
 import { ChatTypeContent } from "./ChatTypeContent";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -17,6 +20,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Form, FormControl, FormField } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
@@ -38,6 +43,12 @@ type ChatGroupSheetProps = {
   chatId: string;
   groupName: string;
 };
+
+const ChatEditGroupNameSchema = z.object({
+  groupName: z.string().min(1, {
+    message: "Group name must not be empty",
+  }),
+});
 
 export const ChatGroupSheet: FC<ChatGroupSheetProps> = ({
   chatId,
@@ -68,6 +79,11 @@ export const ChatGroupSheet: FC<ChatGroupSheetProps> = ({
 
   const chatFiles = messages?.filter(({ type }) => type !== "file");
 
+  const form = useForm<z.infer<typeof ChatEditGroupNameSchema>>({
+    resolver: zodResolver(ChatEditGroupNameSchema),
+    defaultValues: { groupName: groupName },
+  });
+
   const handleDeleteGroup = async () => {
     try {
       await blockGroup({ conversationId: chatId });
@@ -96,9 +112,9 @@ export const ChatGroupSheet: FC<ChatGroupSheetProps> = ({
     }
   };
 
-  const handleEditGroupName = async (name: string) => {
+  const handleEditGroupName = async ({ groupName }: { groupName: string }) => {
     try {
-      await editGroupName({ conversationId: chatId, name });
+      await editGroupName({ conversationId: chatId, groupName });
       toast.success("Group name updated successfully");
     } catch (error) {
       console.log(error);
@@ -116,7 +132,7 @@ export const ChatGroupSheet: FC<ChatGroupSheetProps> = ({
         </AvatarFallback>
       </Avatar>
 
-      <SheetTitle className="flex justify-center text-2xl mt-4 group">
+      <SheetTitle className="flex justify-center group text-2xl mt-4">
         <Dialog>
           <DialogTrigger className="flex items-center gap-2 transition">
             {groupName}
@@ -131,6 +147,40 @@ export const ChatGroupSheet: FC<ChatGroupSheetProps> = ({
             <DialogHeader>
               <DialogTitle>Edit Group Name</DialogTitle>
             </DialogHeader>
+
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(handleEditGroupName)}
+                className="flex items-center gap-4"
+              >
+                <FormField
+                  control={form.control}
+                  name="groupName"
+                  render={({ field }) => (
+                    <FormControl>
+                      <Input
+                        {...field}
+                        value={form.watch("groupName")}
+                        onKeyDown={async (e) => {
+                          if (e.key === "Enter" && !e.shiftKey) {
+                            e.preventDefault();
+                            await form.handleSubmit(handleEditGroupName)();
+                          }
+                        }}
+                        className="flex-grow bg-slate-200 dark:bg-slate-800 rounded-2xl py-2 px-4 ring-0 focus:ring-0 focus:outline-none outline-none"
+                      />
+                    </FormControl>
+                  )}
+                />
+
+                <Save
+                  className="cursor-pointer"
+                  onClick={async () =>
+                    await form.handleSubmit(handleEditGroupName)()
+                  }
+                />
+              </form>
+            </Form>
           </DialogContent>
         </Dialog>
       </SheetTitle>

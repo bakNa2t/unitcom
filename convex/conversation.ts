@@ -250,3 +250,29 @@ export const markAsRead = mutation({
     });
   },
 });
+
+export const editGroupName = mutation({
+  args: {
+    conversationId: v.id("conversations"),
+    name: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) throw new ConvexError("Not authenticated");
+
+    const currentUser = await getUserDataById({
+      ctx,
+      clerkId: identity.subject,
+    });
+
+    if (!currentUser) throw new ConvexError("User not found");
+
+    const conversation = await ctx.db.get(args.conversationId);
+
+    if (!conversation) throw new ConvexError("Conversation not found");
+
+    await ctx.db.patch(args.conversationId, { name: args.name });
+    return true;
+  },
+});

@@ -56,6 +56,7 @@ export const ChatGroupSheet: FC<ChatGroupSheetProps> = ({
 }) => {
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const [leaveConfirmation, setLeaveConfirmation] = useState(false);
+  const [editNameConfirmation, setEditNameConfirmation] = useState(false);
 
   const { mutate: leaveGroup, state: leaveGroupState } = useMutationHandler(
     api.conversation.leaveGroup
@@ -116,6 +117,7 @@ export const ChatGroupSheet: FC<ChatGroupSheetProps> = ({
     try {
       await editGroupName({ conversationId: chatId, name });
       toast.success("Group name updated successfully");
+      setEditNameConfirmation(false);
     } catch (error) {
       console.log(error);
       toast.error(
@@ -133,8 +135,14 @@ export const ChatGroupSheet: FC<ChatGroupSheetProps> = ({
       </Avatar>
 
       <SheetTitle className="flex justify-center group text-2xl mt-4">
-        <Dialog>
-          <DialogTrigger className="flex items-center gap-2 transition">
+        <Dialog
+          open={editNameConfirmation}
+          onOpenChange={() => setEditNameConfirmation(!editNameConfirmation)}
+        >
+          <DialogTrigger
+            className="flex items-center gap-2 transition"
+            onClick={() => setEditNameConfirmation(true)}
+          >
             {groupName}
             <Pencil
               width={16}

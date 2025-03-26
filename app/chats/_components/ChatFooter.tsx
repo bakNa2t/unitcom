@@ -238,7 +238,7 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
       <form
         onSubmit={form.handleSubmit(handleCreateMessage)}
         style={isDesktop ? { width: `calc(100% - ${sidebarWidth + 3}%)` } : {}}
-        className="fixed bottom-0 flex items-center justify-between w-full h-20 space-x-3 px-3 md:pr-16 z-30 bg-teal-50 dark:bg-slate-900"
+        className="fixed bottom-0 flex items-center justify-between w-full h-20 space-x-3 px-3 md:pr-16 z-30 bg-teal-50/60 dark:bg-slate-900/60 backdrop-filter backdrop-blur-sm"
       >
         <Popover>
           <PopoverTrigger className="flex items-center">

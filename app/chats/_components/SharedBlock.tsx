@@ -56,8 +56,7 @@ export const SharedBlock: FC<SharedBlockProps> = ({
             pathname === "/chats" ? "my-60 2xl:my-[30rem]" : "my-20"
           )}
         >
-          <div className="hidden md:block"></div>
-          {children}
+          <div className="hidden md:block">{children}</div>
         </ResizablePanel>
       </ResizablePanelGroup>
 

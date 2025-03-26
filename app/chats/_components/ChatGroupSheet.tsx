@@ -181,12 +181,13 @@ export const ChatGroupSheet: FC<ChatGroupSheetProps> = ({
                   )}
                 />
 
-                <Save
-                  className="cursor-pointer"
-                  onClick={async () =>
-                    await form.handleSubmit(handleEditGroupName)()
-                  }
-                />
+                <div className="cursor-pointer p-2 hover:bg-primary-main hover:text-indigo-950 transition rounded-lg">
+                  <Save
+                    onClick={async () =>
+                      await form.handleSubmit(handleEditGroupName)()
+                    }
+                  />
+                </div>
               </form>
             </Form>
           </DialogContent>

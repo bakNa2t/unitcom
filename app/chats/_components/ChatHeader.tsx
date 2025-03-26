@@ -49,7 +49,7 @@ export const ChatHeader: FC<ChatHeaderProps> = ({
   return (
     <div
       className={cn(
-        "fixed flex items-center justify-between w-full h-20 top-0 bg-teal-50 dark:bg-slate-900 px-3 md:pr-10 space-x-3 z-10"
+        "fixed flex items-center justify-between w-full h-20 top-0 bg-teal-50/60 dark:bg-slate-900/60 backdrop-filter backdrop-blur-sm px-3 md:pr-10 space-x-3 z-10"
       )}
       style={isDesktop ? { width: `calc(100% - ${sidebarWidth + 3}%)` } : {}}
     >

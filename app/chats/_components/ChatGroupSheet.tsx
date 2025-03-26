@@ -45,7 +45,7 @@ type ChatGroupSheetProps = {
 };
 
 const ChatEditGroupNameSchema = z.object({
-  groupName: z.string().min(1, {
+  name: z.string().min(1, {
     message: "Group name must not be empty",
   }),
 });
@@ -81,7 +81,7 @@ export const ChatGroupSheet: FC<ChatGroupSheetProps> = ({
 
   const form = useForm<z.infer<typeof ChatEditGroupNameSchema>>({
     resolver: zodResolver(ChatEditGroupNameSchema),
-    defaultValues: { groupName: groupName },
+    defaultValues: { name: groupName },
   });
 
   const handleDeleteGroup = async () => {
@@ -112,9 +112,9 @@ export const ChatGroupSheet: FC<ChatGroupSheetProps> = ({
     }
   };
 
-  const handleEditGroupName = async ({ groupName }: { groupName: string }) => {
+  const handleEditGroupName = async ({ name }: { name: string }) => {
     try {
-      await editGroupName({ conversationId: chatId, groupName });
+      await editGroupName({ conversationId: chatId, name });
       toast.success("Group name updated successfully");
     } catch (error) {
       console.log(error);
@@ -155,12 +155,12 @@ export const ChatGroupSheet: FC<ChatGroupSheetProps> = ({
               >
                 <FormField
                   control={form.control}
-                  name="groupName"
+                  name="name"
                   render={({ field }) => (
                     <FormControl>
                       <Input
                         {...field}
-                        value={form.watch("groupName")}
+                        value={form.watch("name")}
                         onKeyDown={async (e) => {
                           if (e.key === "Enter" && !e.shiftKey) {
                             e.preventDefault();

@@ -105,6 +105,8 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
         type: "text",
         content: [content],
       });
+
+      form.reset();
     } catch (error) {
       console.log(error);
       toast.error(

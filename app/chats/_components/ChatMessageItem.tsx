@@ -159,7 +159,7 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
                     open={openDeleteModal}
                     onOpenChange={() => setOpenDeleteModal(!openDeleteModal)}
                   >
-                    <DialogTrigger className="absolute top-0 -right-6 items-center opacity-0 group-hover:opacity-100 cursor-pointer">
+                    <DialogTrigger className="absolute top-0 -right-6 items-center opacity-0 group-hover:opacity-100 cursor-pointer z-50">
                       <Trash2 width={16} height={16} />
                     </DialogTrigger>
 
@@ -196,7 +196,7 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
                       <Pencil
                         width={16}
                         height={16}
-                        className="absolute top-8 -right-6 items-center opacity-0 group-hover:opacity-100 cursor-pointer"
+                        className="absolute top-8 -right-6 items-center opacity-0 group-hover:opacity-100 cursor-pointer z-50"
                       />
                     </DialogTrigger>
 

@@ -24,8 +24,8 @@ import { Form, FormControl, FormField } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
 import { cn } from "@/lib/utils";
-import { useMutationHandler } from "@/hooks/useMutationHandler";
 import { api } from "@/convex/_generated/api";
+import { useMutationHandler } from "@/hooks/useMutationHandler";
 import { ChatMessageSchema } from "./ChatFooter";
 
 type ChatMessageItemProps = {
@@ -203,66 +203,18 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
                             )}
                           />
 
-                          <Save
-                            className="cursor-pointer"
-                            onClick={async () =>
-                              await form.handleSubmit(handleEditMessage)()
-                            }
-                          />
+                          <div className="cursor-pointer p-2 hover:bg-primary-main hover:text-indigo-950 transition rounded-lg">
+                            <Save
+                              className="cursor-pointer"
+                              onClick={async () =>
+                                await form.handleSubmit(handleEditMessage)()
+                              }
+                            />
+                          </div>
                         </form>
                       </Form>
                     </DialogContent>
                   </Dialog>
-                  {/* <Popover
-                    open={showEditModal}
-                    onOpenChange={() => setShowEditModal(!showEditModal)}
-                  >
-                    <PopoverTrigger>
-                      <Pencil
-                        width={16}
-                        height={16}
-                        className="absolute top-8 -right-6 items-center opacity-0 group-hover:opacity-100 cursor-pointer"
-                      />
-                    </PopoverTrigger>
-
-                    <PopoverContent className="absolute -top-20 -right-14 w-80 bg-slate-100 dark:bg-slate-950">
-                      <Form {...form}>
-                        <form
-                          onSubmit={form.handleSubmit(handleEditMessage)}
-                          className="flex items-center gap-4"
-                        >
-                          <FormField
-                            control={form.control}
-                            name="content"
-                            render={({ field }) => (
-                              <FormControl>
-                                <Input
-                                  {...field}
-                                  value={form.watch("content")}
-                                  onKeyDown={async (e) => {
-                                    if (e.key === "Enter" && !e.shiftKey) {
-                                      e.preventDefault();
-                                      await form.handleSubmit(
-                                        handleEditMessage
-                                      )();
-                                    }
-                                  }}
-                                  className="flex-grow bg-slate-200 dark:bg-slate-800 rounded-2xl py-2 px-4 ring-0 focus:ring-0 focus:outline-none outline-none"
-                                />
-                              </FormControl>
-                            )}
-                          />
-
-                          <Save
-                            className="cursor-pointer"
-                            onClick={async () =>
-                              await form.handleSubmit(handleEditMessage)()
-                            }
-                          />
-                        </form>
-                      </Form>
-                    </PopoverContent>
-                  </Popover> */}
                 </>
               )}
               <p className="text-wrap break-words whitespace-pre-wrap break-all">
@@ -279,20 +231,55 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
           )}
 
           {type === "image" && (
-            <Link
-              href={content[0]}
-              passHref
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Image
-                src={content[0]}
-                alt="file"
-                width={240}
-                height={112}
-                className="w-60 h-28 object-cover rounded-lg"
-              />
-            </Link>
+            <>
+              <Link
+                href={content[0]}
+                passHref
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Image
+                  src={content[0]}
+                  alt="file"
+                  width={240}
+                  height={112}
+                  className="w-60 h-28 object-cover rounded-lg"
+                />
+              </Link>
+
+              <Dialog
+                open={openDeleteModal}
+                onOpenChange={() => setOpenDeleteModal(!openDeleteModal)}
+              >
+                <DialogTrigger className="absolute top-2 right-4 items-center p-2 opacity-0 group-hover:opacity-100 text-primary-main hover:bg-slate-200/40 rounded-full transition cursor-pointer">
+                  <Trash2 width={16} height={16} />
+                </DialogTrigger>
+
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Are you sure?</DialogTitle>
+                  </DialogHeader>
+                  <DialogDescription>
+                    This image will be deleted permanently
+                  </DialogDescription>
+                  <DialogFooter>
+                    <Button
+                      variant="outline"
+                      onClick={() => setOpenDeleteModal(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      onClick={() => {}}
+                    >
+                      Delete
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </>
           )}
 
           {type === "pdf" && (

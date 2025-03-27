@@ -36,3 +36,10 @@ export const getFormatedTimestamp = (timestamp: number) => {
 
 export const getFormattedToPluralize = (item: string, length: number) =>
   length <= 1 ? item : `${item}s`;
+
+export const linkFromStorage = (content: string) => {
+  if (content.startsWith("https://") || content.startsWith("http://")) {
+    const strToArray = content.split("/");
+    return strToArray[strToArray.length - 1];
+  }
+};

@@ -23,8 +23,9 @@ import {
 import { Form, FormControl, FormField } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { cn } from "@/lib/utils";
+import { cn, linkFromStorage } from "@/lib/utils";
 import { api } from "@/convex/_generated/api";
+import { client as supabase } from "@/lib/supabase/client";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
 import { ChatMessageSchema } from "./ChatFooter";
 
@@ -89,6 +90,34 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
       setShowEditModal(false);
     } catch (error) {
       console.log("Error editing message", error);
+      toast.error(
+        error instanceof ConvexError ? error.data : "An error occurred"
+      );
+    }
+  };
+
+  const handleDeleteMessageMedia = async () => {
+    const mediaUrl = linkFromStorage(content[0]);
+
+    if (!mediaUrl) return;
+
+    try {
+      const { error } = await supabase.storage
+        .from("unitcom-files")
+        .remove([`chat/${mediaUrl}`]);
+
+      if (error) {
+        console.log(
+          "Error deleting image from Supabase storage:",
+          error.message
+        );
+      }
+
+      await deleteMessage({ messageId });
+
+      toast.success("Image deleted successfully");
+    } catch (error) {
+      console.log("Error deleting image message", error);
       toast.error(
         error instanceof ConvexError ? error.data : "An error occurred"
       );
@@ -272,7 +301,7 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
                     <Button
                       type="button"
                       variant="destructive"
-                      onClick={() => {}}
+                      onClick={handleDeleteMessageMedia}
                     >
                       Delete
                     </Button>

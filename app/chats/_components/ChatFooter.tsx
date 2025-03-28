@@ -33,6 +33,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/spinner";
 
 import { api } from "@/convex/_generated/api";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
@@ -41,7 +43,6 @@ import { useSidebarWidth } from "@/hooks/useSidebarWidth";
 
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
-import { Button } from "@/components/ui/button";
 
 type ChatFooterProps = {
   chatId: string;
@@ -332,7 +333,11 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
                 onClick={handleImageUpload}
                 disabled={isFileSend}
               >
-                Send
+                {createMessageState === "loading" ? (
+                  <Spinner size="lg" />
+                ) : (
+                  "Send"
+                )}
               </Button>
             </DialogFooter>
           </DialogContent>

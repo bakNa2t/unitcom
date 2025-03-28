@@ -249,10 +249,47 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
           )}
 
           {type === "audio" && (
-            <audio className="max-w-64 md:max-w-full" controls>
-              <source src={content[0]} type="audio/mpeg" />
-              Your browser does not support the audio element.
-            </audio>
+            <>
+              {fromCurrentUser && (
+                <Dialog
+                  open={openDeleteModal}
+                  onOpenChange={() => setOpenDeleteModal(!openDeleteModal)}
+                >
+                  <DialogTrigger className="absolute top-0 -right-4 items-center p-[4px] opacity-0 group-hover:opacity-100 cursor-pointer z-50 text-indigo-200 hover:text-primary-main hover:bg-indigo-200/20 rounded-full transition">
+                    <Trash2 width={14} height={14} />
+                  </DialogTrigger>
+
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Are you sure?</DialogTitle>
+                    </DialogHeader>
+                    <DialogDescription>
+                      This audio will be deleted permanently
+                    </DialogDescription>
+                    <DialogFooter>
+                      <Button
+                        variant="outline"
+                        onClick={() => setOpenDeleteModal(false)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        onClick={handleDeleteMessageMedia}
+                      >
+                        Delete
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              )}
+
+              <audio className="max-w-64 md:max-w-full" controls>
+                <source src={content[0]} type="audio/mpeg" />
+                Your browser does not support the audio element.
+              </audio>
+            </>
           )}
 
           {type === "image" && (

@@ -159,8 +159,8 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
                     open={openDeleteModal}
                     onOpenChange={() => setOpenDeleteModal(!openDeleteModal)}
                   >
-                    <DialogTrigger className="absolute top-0 -right-6 items-center opacity-0 group-hover:opacity-100 cursor-pointer z-50">
-                      <Trash2 width={16} height={16} />
+                    <DialogTrigger className="absolute top-0 -right-7 items-center p-[4px] opacity-0 group-hover:opacity-100 cursor-pointer z-50 text-indigo-200 hover:text-primary-main hover:bg-indigo-200/20 rounded-full transition">
+                      <Trash2 width={14} height={14} />
                     </DialogTrigger>
 
                     <DialogContent>
@@ -192,12 +192,8 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
                     open={showEditModal}
                     onOpenChange={() => setShowEditModal(!showEditModal)}
                   >
-                    <DialogTrigger>
-                      <Pencil
-                        width={16}
-                        height={16}
-                        className="absolute top-8 -right-6 items-center opacity-0 group-hover:opacity-100 cursor-pointer z-50"
-                      />
+                    <DialogTrigger className="absolute top-7 -right-7 items-center p-[4px] opacity-0 group-hover:opacity-100 cursor-pointer z-50 text-indigo-200 hover:text-primary-main hover:bg-indigo-200/20 rounded-full transition">
+                      <Pencil width={14} height={14} />
                     </DialogTrigger>
 
                     <DialogContent className="w-72 md:w-96 bg-slate-100 dark:bg-slate-950">
@@ -280,8 +276,8 @@ export const ChatMessageItem: FC<ChatMessageItemProps> = ({
                 open={openDeleteModal}
                 onOpenChange={() => setOpenDeleteModal(!openDeleteModal)}
               >
-                <DialogTrigger className="absolute top-2 right-4 items-center p-2 opacity-0 group-hover:opacity-100 text-primary-main hover:bg-slate-200/40 rounded-full transition cursor-pointer">
-                  <Trash2 width={16} height={16} />
+                <DialogTrigger className="absolute top-1 right-3 items-center p-[6px] opacity-0 group-hover:opacity-100 text-slate-200 hover:text-primary-main hover:bg-slate-200/20 rounded-full transition cursor-pointer">
+                  <Trash2 width={14} height={14} />
                 </DialogTrigger>
 
                 <DialogContent>

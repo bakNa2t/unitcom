@@ -26,7 +26,9 @@ export const StartPage = () => {
           </CardHeader>
           <CardContent className="flex justify-center">
             <SignInButton mode="modal">
-              <Button className="w-full bg-slate-600">Sign In</Button>
+              <Button className="w-full bg-slate-600 hover:bg-primary-main hover:text-indigo-950">
+                Sign In
+              </Button>
             </SignInButton>
           </CardContent>
         </Card>

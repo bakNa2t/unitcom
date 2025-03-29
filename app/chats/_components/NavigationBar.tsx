@@ -42,7 +42,7 @@ export const NavigationBar: FC<NavigationBarProps> = ({ trigger }) => {
 
   return (
     <>
-      <div className="flex md:flex-col items-center justify-between bottom-0 md:top-0 left-0 md:w-24 w-full md:h-screen h-20 bg-teal-50 md:bg-gray-50 dark:bg-slate-900 border-r md:border-r-indigo-950 md:dark:border-r-primary-main py-5 fixed z-10 ">
+      <div className="flex md:flex-col items-center justify-between bottom-0 md:top-0 left-0 md:w-24 w-full md:h-screen h-20 bg-teal-50 md:bg-gray-50 dark:bg-slate-900 md:dark:bg-slate-950 border-r md:border-r-indigo-950 md:dark:border-r-primary-main py-5 fixed z-10 ">
         <div className="md:pt-2 flex flex-col items-center gap-9">
           <div className="hidden md:block">
             <Image
@@ -87,7 +87,7 @@ export const NavigationBar: FC<NavigationBarProps> = ({ trigger }) => {
 
                     <TooltipContent
                       side="right"
-                      className="bg-gray-500 dark:bg-gray-700 rounded-xl"
+                      className="bg-primary-main text-indigo-950 dark:bg-teal-100 rounded-xl"
                     >
                       <p>{label}</p>
                     </TooltipContent>

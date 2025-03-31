@@ -17,7 +17,7 @@ export const ThemeModeToggle = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        className="bg-slate-200 dark:bg-slate-800 border-slate-400 dark:border-slate-950  hover:border-primary-main dark:hover:border-primary-main"
+        className="bg-slate-200 hover:bg-teal-100 dark:hover:bg-primary-main dark:hover:text-slate-950 dark:bg-slate-800 border-slate-400 dark:border-slate-950  hover:border-primary-main dark:hover:border-primary-main"
         asChild
       >
         <Button variant="outline" size="icon" className="md:px-4">

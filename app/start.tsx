@@ -25,11 +25,18 @@ export const StartPage = () => {
       <div className="grid place-content-center bg-slate-50 dark:bg-slate-900 w-svw h-dvh">
         <div className="flex flex-col items-center space-y-8">
           <Image
-            src="/logo-title-dark.svg"
+            src="/logo-title-light.svg"
             width={isDesktop ? 400 : 300}
             height="150"
             alt="logo-title"
             className="dark:hidden"
+          />
+          <Image
+            src="/logo-title-dark.svg"
+            width={isDesktop ? 400 : 300}
+            height="150"
+            alt="logo-title"
+            className="hidden dark:block"
           />
 
           <h1 className="text-3xl md:text-5xl font-bold text-primary-main">
@@ -37,7 +44,7 @@ export const StartPage = () => {
             <span className="letter-spacing tracking-widest">Unitcom!</span>
           </h1>
 
-          <Card className="bg-slate-800 w-[300px] md:w-[450px] border-none shadow-xl">
+          <Card className="bg-slate-300 dark:bg-slate-800 w-[300px] md:w-[450px] border-none shadow-xl">
             <CardHeader className="text-muted-foreground">
               <CardTitle className="text-lg md:text-2xl text-center">
                 Connect Effortlessly, Communicate Limitlessly with Unitcom

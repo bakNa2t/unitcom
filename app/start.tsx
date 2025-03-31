@@ -1,7 +1,13 @@
 import Image from "next/image";
 import { SignInButton } from "@clerk/clerk-react";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ThemeModeToggle } from "@/components/theme-mode-toggle";
 
@@ -16,7 +22,7 @@ export const StartPage = () => {
         <ThemeModeToggle />
       </div>
 
-      <div className="grid place-content-center bg-slate-900 w-svw h-dvh">
+      <div className="grid place-content-center bg-slate-50 dark:bg-slate-900 w-svw h-dvh">
         <div className="flex flex-col items-center space-y-8">
           <Image
             src="/logo-title-dark.svg"
@@ -26,18 +32,25 @@ export const StartPage = () => {
             className="dark:hidden"
           />
 
-          <h1 className="text-3xl md:text-4xl font-bold text-primary-main">
-            Welcome to Unitcom!
+          <h1 className="text-3xl md:text-5xl font-bold text-primary-main">
+            Welcome to{" "}
+            <span className="letter-spacing tracking-widest">Unitcom!</span>
           </h1>
 
-          <Card className="bg-slate-800 w-[300px] md:w-[350px] border-none shadow-xl">
+          <Card className="bg-slate-800 w-[300px] md:w-[450px] border-none shadow-xl">
             <CardHeader className="text-muted-foreground">
-              <CardTitle>Sign in to start messaging</CardTitle>
+              <CardTitle className="text-lg md:text-2xl text-center">
+                Connect Effortlessly, Communicate Limitlessly with Unitcom
+              </CardTitle>
             </CardHeader>
-            <CardContent className="flex justify-center">
+            <CardContent className="flex flex-col justify-center gap-6">
+              <CardDescription className="text-muted-foreground text-center md:text-base">
+                Create, join, and manage group conversations with ease. Add
+                text, images, and voice notes to your messages.
+              </CardDescription>
               <SignInButton mode="modal">
-                <Button className="w-full bg-slate-600 hover:bg-primary-main hover:text-indigo-950">
-                  Sign In
+                <Button className="w-full md:text-lg bg-slate-600 hover:bg-primary-main hover:text-indigo-950">
+                  Join
                 </Button>
               </SignInButton>
             </CardContent>

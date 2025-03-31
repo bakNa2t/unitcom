@@ -18,7 +18,14 @@ export const StartPage = () => {
 
   return (
     <>
-      <div className="absolute top-4 right-4">
+      <div className="fixed flex items-center justify-end gap-4 bg-transparent top-0 w-full p-4 md:p-6">
+        <Button
+          variant="outline"
+          className="bg-slate-200 hover:bg-teal-100 dark:hover:bg-primary-main dark:hover:text-slate-950 dark:bg-slate-800 border-slate-400 dark:border-slate-950  hover:border-primary-main dark:hover:border-primary-main"
+        >
+          <SignInButton mode="modal">Sign In</SignInButton>
+        </Button>
+
         <ThemeModeToggle />
       </div>
 

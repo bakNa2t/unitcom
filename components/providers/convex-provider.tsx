@@ -10,6 +10,7 @@ import {
 } from "convex/react";
 
 import { StartPage } from "@/app/start";
+import { ThemeProvider } from "./theme-provider";
 
 const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 
@@ -20,9 +21,16 @@ export const ConvexClientProvider = ({ children }: { children: ReactNode }) => {
     >
       <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
         <Authenticated>{children}</Authenticated>
-        <Unauthenticated>
-          <StartPage />
-        </Unauthenticated>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Unauthenticated>
+            <StartPage />
+          </Unauthenticated>
+        </ThemeProvider>
       </ConvexProviderWithClerk>
     </ClerkProvider>
   );

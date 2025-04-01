@@ -267,7 +267,7 @@ const ProfileDialogContent = () => {
                 <p
                   key={status}
                   onClick={() => setStatus(status)}
-                  className="px-2 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md cursor-pointer"
+                  className="px-2 py-3 hover:bg-slate-300 dark:hover:bg-slate-600 rounded-md transition-shadow duration-300 hover:shadow-sm hover:shadow-slate-400 cursor-pointer"
                 >
                   {status}
                 </p>

@@ -38,6 +38,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Spinner } from "@/components/spinner";
 
 import { api } from "@/convex/_generated/api";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
@@ -280,6 +281,11 @@ const ProfileDialogContent = () => {
               disabled={updateStatusState === "loading"}
             >
               Update Status
+              {updateStatusState === "loading" ? (
+                <Spinner size="lg" className="!text-slate-950" />
+              ) : (
+                ""
+              )}
             </Button>
           </DialogContent>
         </Dialog>

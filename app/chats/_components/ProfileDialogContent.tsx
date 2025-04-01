@@ -277,7 +277,7 @@ const ProfileDialogContent = () => {
             <Button
               type="button"
               onClick={onUpdateStaus}
-              className="ml-auto w-fit bg-primary-main text-primary hover:text-primary-main"
+              className="ml-auto w-fit hover:bg-primary-main text-primary-main hover:text-primary"
               disabled={updateStatusState === "loading"}
             >
               Update Status

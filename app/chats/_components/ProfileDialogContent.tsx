@@ -196,10 +196,15 @@ const ProfileDialogContent = () => {
 
                 <Button
                   type="submit"
-                  className="text-primary hover:text-primary-main bg-primary-main"
+                  className="text-primary-main hover:text-primary bg-primary hover:bg-primary-main"
                   disabled={createFriendRequestState === "loading"}
                 >
                   Submit
+                  {updateStatusState === "loading" ? (
+                    <Spinner size="lg" className="!text-slate-950" />
+                  ) : (
+                    ""
+                  )}
                 </Button>
               </form>
             </Form>

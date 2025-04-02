@@ -1,5 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 import { SignInButton } from "@clerk/clerk-react";
+import { useConvexAuth } from "convex/react";
 
 import {
   Card,
@@ -15,16 +17,25 @@ import { useIsDesktop } from "@/hooks/useIsDesktop";
 
 export const StartPage = () => {
   const isDesktop = useIsDesktop();
+  const { isAuthenticated, isLoading } = useConvexAuth();
 
   return (
     <>
       <div className="fixed flex items-center justify-end gap-4 bg-transparent top-0 w-full p-4 md:p-6">
-        <Button
-          variant="outline"
-          className="bg-slate-200 hover:bg-teal-100 dark:hover:bg-primary-main dark:hover:text-slate-950 dark:bg-slate-800 border-slate-400 dark:border-slate-950  hover:border-primary-main dark:hover:border-primary-main"
-        >
-          <SignInButton mode="modal">Sign In</SignInButton>
-        </Button>
+        {isAuthenticated && !isLoading && (
+          <Link href="/chats">Let&apos;s chat</Link>
+        )}
+
+        {!isAuthenticated && !isLoading && (
+          <SignInButton mode="modal">
+            <Button
+              variant="outline"
+              className="bg-slate-200 hover:bg-teal-100 dark:hover:bg-primary-main dark:hover:text-slate-950 dark:bg-slate-800 border-slate-400 dark:border-slate-950  hover:border-primary-main dark:hover:border-primary-main"
+            >
+              Sign In
+            </Button>
+          </SignInButton>
+        )}
 
         <ThemeModeToggle />
       </div>
@@ -62,11 +73,22 @@ export const StartPage = () => {
                 Create, join, and manage group conversations with ease. Add
                 text, images, and voice notes to your messages.
               </CardDescription>
-              <SignInButton mode="modal">
-                <Button className="w-full md:text-lg bg-slate-600 hover:bg-primary-main hover:text-indigo-950">
-                  Join
-                </Button>
-              </SignInButton>
+
+              {isAuthenticated && !isLoading && (
+                <Link href="/chats">
+                  <Button className="w-full md:text-lg bg-slate-600 hover:bg-primary-main hover:text-indigo-950">
+                    Let&apos;s chat
+                  </Button>
+                </Link>
+              )}
+
+              {!isAuthenticated && !isLoading && (
+                <SignInButton mode="modal">
+                  <Button className="w-full md:text-lg bg-slate-600 hover:bg-primary-main hover:text-indigo-950">
+                    Join
+                  </Button>
+                </SignInButton>
+              )}
             </CardContent>
           </Card>
         </div>

@@ -44,9 +44,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <TooltipProvider>
-              <main>{children}</main>
-            </TooltipProvider>
+            <TooltipProvider>{children}</TooltipProvider>
             <Toaster richColors />
           </ThemeProvider>
         </ConvexClientProvider>

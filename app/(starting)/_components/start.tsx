@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { ThemeModeToggle } from "@/components/theme-mode-toggle";
 
 import { useIsDesktop } from "@/hooks/useIsDesktop";
+import { Spinner } from "@/components/spinner";
 
 export const StartPage = () => {
   const isDesktop = useIsDesktop();
@@ -24,6 +25,10 @@ export const StartPage = () => {
   return (
     <>
       <div className="fixed flex items-center justify-end gap-4 bg-transparent top-0 w-full p-4 md:p-6">
+        {isLoading && (
+          <Spinner size="lg" className="text-primary-main dark:text-slate-50" />
+        )}
+
         {isAuthenticated && !isLoading && (
           <Link href="/chats">Let&apos;s chat</Link>
         )}
@@ -75,6 +80,15 @@ export const StartPage = () => {
                 Create, join, and manage group conversations with ease. Add
                 text, images, and voice notes to your messages.
               </CardDescription>
+
+              {isLoading && (
+                <Button className="w-full md:text-lg bg-slate-600 hover:bg-primary-main hover:text-indigo-950">
+                  <Spinner
+                    size="2xl"
+                    className="text-primary-main dark:text-slate-50"
+                  />
+                </Button>
+              )}
 
               {isAuthenticated && !isLoading && (
                 <Link href="/chats">

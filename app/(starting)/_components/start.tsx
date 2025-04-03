@@ -70,14 +70,31 @@ export const StartPage = () => {
           />
 
           <h1 className="text-3xl md:text-5xl font-bold text-primary-main">
-            Welcome to{" "}
-            <span className="letter-spacing tracking-widest">Unitcom!</span>
+            {isAuthenticated && (
+              <p>
+                Welcome to{" "}
+                <span className="letter-spacing tracking-widest">Unitcom!</span>
+              </p>
+            )}
+            {!isAuthenticated && (
+              <p className="w-[300px] md:w-[450px] text-center">
+                Take a moment to join the conversation
+              </p>
+            )}
           </h1>
 
           <Card className="bg-slate-300 dark:bg-slate-800 w-[300px] md:w-[450px] border-none shadow-xl">
             <CardHeader className="text-muted-foreground">
               <CardTitle className="text-lg md:text-2xl text-center">
-                Connect Effortlessly, Communicate Limitlessly with Unitcom
+                {isAuthenticated && (
+                  <p>
+                    Connect Effortlessly, Communicate Limitlessly with Unitcom
+                  </p>
+                )}
+
+                {!isAuthenticated && (
+                  <p>Easy to start, easy to use, easy to inspire</p>
+                )}
               </CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col justify-center gap-6">

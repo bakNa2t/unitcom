@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { SignInButton } from "@clerk/clerk-react";
+import { SignInButton, UserButton } from "@clerk/clerk-react";
 import { useConvexAuth } from "convex/react";
 
 import {
@@ -30,7 +30,12 @@ export const StartPage = () => {
         )}
 
         {isAuthenticated && !isLoading && (
-          <Link href="/chats">Let&apos;s chat</Link>
+          <>
+            <Button variant="ghost" size="sm">
+              <Link href="/chats">Let&apos;s chat</Link>
+            </Button>
+            <UserButton afterSwitchSessionUrl="/" />
+          </>
         )}
 
         {!isAuthenticated && !isLoading && (
